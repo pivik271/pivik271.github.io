@@ -5,7 +5,18 @@
     <link>https://pivik271.github.io/</link>
     <description>Recent content on pivik</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 08 Aug 2022 17:24:22 +0700</lastBuildDate><atom:link href="https://pivik271.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 18 Oct 2022 11:39:14 +0700</lastBuildDate><atom:link href="https://pivik271.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Sơ khảo Sinh viên với An toàn thông tin 2022</title>
+      <link>https://pivik271.github.io/posts/ascisquals2022/</link>
+      <pubDate>Tue, 18 Oct 2022 11:39:14 +0700</pubDate>
+      
+      <guid>https://pivik271.github.io/posts/ascisquals2022/</guid>
+      <description>Đây là lần thứ 2 mình tham gia Sinh viên với An toàn thông tin. Và mình khá vui vì lần này mình đã clear được pwn vòng sơ khảo (so với thành tích không làm được bài nào năm rồi hehe).
+Sau đây mình sẽ viết writeup về 1 bài pwn khá hay là Convert. Các binary với solve script mình sẽ để ở đây.
+Convert: Category: pwn Points: 498 Solves: 5 Description: Try my best!</description>
+    </item>
+    
     <item>
       <title>corCTF 2022 - corchat, nbd</title>
       <link>https://pivik271.github.io/posts/corctf2022/</link>
@@ -35,8 +46,7 @@ Madcore: Category: pwn Points: 256 Solves: 30 Description: My coredump helper is
       
       <guid>https://pivik271.github.io/posts/asisquals2021/</guid>
       <description>Cuối tuần rồi mình có chơi giải ASIS cùng với ae team Underrated, và được vào chung kết rồi nè 🥰
-Mình giải các challenge pwn là chủ yếu và làm được 3 bài. Các challenge giải này theo mình đánh giá là khá hay.
-Các binary với solve script mình sẽ để ở đây.
+Mình giải các challenge pwn là chủ yếu và làm được 3 bài. Các challenge giải này theo mình đánh giá là khá hay. Các binary với solve script mình sẽ để ở đây.
 Just pwn it: Category: pwn Points: 51 Solves: 106 Description: Just Pwn It! Nothing else!! Source code overview Tác giả cho luôn source, vậy cùng xem qua nào!</description>
     </item>
     
