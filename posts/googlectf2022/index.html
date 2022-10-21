@@ -175,6 +175,11 @@ Madcore: Category: pwn Points: 256 Solves: 30 Description: My coredump helper is
                     <span>About</span>
                 </a>
             </li>
+            <li>
+                <a href="https://pivik271.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
         </ul>
     </nav>
 </header>
@@ -186,10 +191,51 @@ Madcore: Category: pwn Points: 256 Solves: 30 Description: My coredump helper is
     <h1 class="post-title">
       Google CTF - Madcore, Fixedaslr
     </h1>
-    <div class="post-meta"><span title='2022-07-04 01:33:51 +0700 +07'>July 4, 2022</span>
+    <div class="post-meta"><span title='2022-07-04 01:33:51 +0700 +07'>July 4, 2022</span>&nbsp;·&nbsp;14 min
 
 </div>
-  </header> 
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#madcore" aria-label="Madcore:">Madcore:</a><ul>
+                        
+                <li>
+                    <a href="#overview" aria-label="Overview">Overview</a></li>
+                <li>
+                    <a href="#generate-core-dump" aria-label="Generate core dump">Generate core dump</a></li>
+                <li>
+                    <a href="#finding-the-bug" aria-label="Finding the bug">Finding the bug</a></li>
+                <li>
+                    <a href="#command-injection" aria-label="Command injection">Command injection</a></li>
+                <li>
+                    <a href="#final-script" aria-label="Final script">Final script</a></li></ul>
+                </li>
+                <li>
+                    <a href="#fixedaslr" aria-label="Fixedaslr:">Fixedaslr:</a><ul>
+                        
+                <li>
+                    <a href="#overview-1" aria-label="Overview">Overview</a></li>
+                <li>
+                    <a href="#finding-the-bug-1" aria-label="Finding the bug">Finding the bug</a></li>
+                <li>
+                    <a href="#oob" aria-label="Oob">Oob</a></li>
+                <li>
+                    <a href="#ropchain" aria-label="Ropchain">Ropchain</a></li>
+                <li>
+                    <a href="#final-script-1" aria-label="Final script">Final script</a>
+                </li>
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
   <div class="post-content"><p>Cũng một thời gian rồi mình chưa viết gì trên blog. Vừa mới thi cuối kì xong là có giải Google CTF luôn nên mình quyết định come back. Sau 48h cày xuyên màn đêm cùng đồng bọn thì mình làm được 2 bài pwn, đỡ phế hơn năm rồi hehe.</p>
 <p>Các binary với solve script mình sẽ để ở <a href="https://github.com/pivik271/ctf-writeups/tree/main/2022/GoogleCTF">đây</a>.</p>
 <h1 id="madcore">Madcore:<a hidden class="anchor" aria-hidden="true" href="#madcore">#</a></h1>
@@ -830,6 +876,19 @@ Madcore: Category: pwn Points: 256 Solves: 30 Description: My coredump helper is
   <footer class="post-footer">
     <ul class="post-tags">
     </ul>
+<nav class="paginav">
+  <a class="prev" href="https://pivik271.github.io/posts/corctf2022/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>corCTF 2022 - corchat, nbd</span>
+  </a>
+  <a class="next" href="https://pivik271.github.io/posts/asisquals2021/">
+    <span class="title">Next »</span>
+    <br>
+    <span>ASIS QUALS - Just pwn it, ABBR, StrVec</span>
+  </a>
+</nav>
+
   </footer>
 </article>
     </main>
@@ -901,6 +960,53 @@ Madcore: Category: pwn Points: 256 Solves: 30 Description: My coredump helper is
         }
     })
 
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
 </script>
 </body>
 

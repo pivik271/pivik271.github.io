@@ -175,6 +175,11 @@ corchat: Category: pwn Points: 334 Solves: 10 Description: Can you pwn our inter
                     <span>About</span>
                 </a>
             </li>
+            <li>
+                <a href="https://pivik271.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
         </ul>
     </nav>
 </header>
@@ -186,10 +191,43 @@ corchat: Category: pwn Points: 334 Solves: 10 Description: Can you pwn our inter
     <h1 class="post-title">
       corCTF 2022 - corchat, nbd
     </h1>
-    <div class="post-meta"><span title='2022-08-08 17:24:22 +0700 +07'>August 8, 2022</span>
+    <div class="post-meta"><span title='2022-08-08 17:24:22 +0700 +07'>August 8, 2022</span>&nbsp;·&nbsp;10 min
 
 </div>
-  </header> 
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#corchat" aria-label="corchat:">corchat:</a><ul>
+                        
+                <li>
+                    <a href="#overview" aria-label="Overview">Overview</a></li>
+                <li>
+                    <a href="#digging-into-the-source-code" aria-label="Digging into the source code">Digging into the source code</a></li>
+                <li>
+                    <a href="#bof" aria-label="BOF">BOF</a></li>
+                <li>
+                    <a href="#another-problem" aria-label="Another problem?">Another problem?</a></li>
+                <li>
+                    <a href="#final-script" aria-label="Final script">Final script</a></li></ul>
+                </li>
+                <li>
+                    <a href="#nbd" aria-label="nbd:">nbd:</a><ul>
+                        
+                <li>
+                    <a href="#final-script-1" aria-label="Final script:">Final script:</a>
+                </li>
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
   <div class="post-content"><p>I played corCTF last week with my team <code>purf3ct</code> and managed to solve 4 pwn challenges. Here are my writeups for some of them.</p>
 <p>All of my exploit scripts can be found <a href="https://github.com/pivik271/ctf-writeups/tree/main/2022/corCTF">here</a>.</p>
 <h1 id="corchat">corchat:<a hidden class="anchor" aria-hidden="true" href="#corchat">#</a></h1>
@@ -692,6 +730,19 @@ pwndbg&gt;
   <footer class="post-footer">
     <ul class="post-tags">
     </ul>
+<nav class="paginav">
+  <a class="prev" href="https://pivik271.github.io/posts/ascisquals2022/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>Sơ khảo Sinh viên với An toàn thông tin 2022</span>
+  </a>
+  <a class="next" href="https://pivik271.github.io/posts/googlectf2022/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Google CTF - Madcore, Fixedaslr</span>
+  </a>
+</nav>
+
   </footer>
 </article>
     </main>
@@ -763,6 +814,53 @@ pwndbg&gt;
         }
     })
 
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
 </script>
 </body>
 

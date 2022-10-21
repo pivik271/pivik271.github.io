@@ -175,6 +175,11 @@ Convert: Category: pwn Points: 498 Solves: 5 Description: Try my best!"/>
                     <span>About</span>
                 </a>
             </li>
+            <li>
+                <a href="https://pivik271.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
         </ul>
     </nav>
 </header>
@@ -186,10 +191,37 @@ Convert: Category: pwn Points: 498 Solves: 5 Description: Try my best!"/>
     <h1 class="post-title">
       Sơ khảo Sinh viên với An toàn thông tin 2022
     </h1>
-    <div class="post-meta"><span title='2022-10-18 11:39:14 +0700 +07'>October 18, 2022</span>
+    <div class="post-meta"><span title='2022-10-18 11:39:14 +0700 +07'>October 18, 2022</span>&nbsp;·&nbsp;8 min
 
 </div>
-  </header> 
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#convert" aria-label="Convert:">Convert:</a><ul>
+                        
+                <li>
+                    <a href="#overview" aria-label="Overview">Overview</a></li>
+                <li>
+                    <a href="#finding-the-bug" aria-label="Finding the bug">Finding the bug</a></li>
+                <li>
+                    <a href="#stack-buffer-overflow" aria-label="Stack buffer overflow">Stack buffer overflow</a></li>
+                <li>
+                    <a href="#overwrite-got" aria-label="Overwrite GOT">Overwrite GOT</a></li>
+                <li>
+                    <a href="#final-script" aria-label="Final script">Final script</a>
+                </li>
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
   <div class="post-content"><p>Đây là lần thứ 2 mình tham gia Sinh viên với An toàn thông tin. Và mình khá vui vì lần này mình đã clear được pwn vòng sơ khảo (so với thành tích không làm được bài nào năm rồi hehe).</p>
 <p><img loading="lazy" src="/posts/ascisquals2022/img1.png" alt="img"  />
 </p>
@@ -571,6 +603,14 @@ pwndbg&gt;
   <footer class="post-footer">
     <ul class="post-tags">
     </ul>
+<nav class="paginav">
+  <a class="next" href="https://pivik271.github.io/posts/corctf2022/">
+    <span class="title">Next »</span>
+    <br>
+    <span>corCTF 2022 - corchat, nbd</span>
+  </a>
+</nav>
+
   </footer>
 </article>
     </main>
@@ -642,6 +682,53 @@ pwndbg&gt;
         }
     })
 
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
 </script>
 </body>
 
